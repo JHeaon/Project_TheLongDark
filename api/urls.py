@@ -2,9 +2,11 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 
+app_name = "api"
+
 urlpatterns = [
     path("", views.home, name="home"),
-    path("", views.gameplay, name="gameplay"),
-    path("", views.community, name="community"),
-    path("", views.support, name="support"),
+    path("gameplay/", views.gameplay, name="gameplay"),
+    path("community/", views.community, name="community"),
+    path("support/", views.support, name="support"),
 ]
