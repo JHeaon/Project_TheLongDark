@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>The Long Dark</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black">
+<header class="bg-black dark:bg-black-100">
+    <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+            <div class="flex-1 md:flex md:items-center md:gap-12">
+                <a class="block text-teal-600 dark:text-teal-300" href="/">
+                    <span class="sr-only">Home</span>
+                    <img src="{% static 'img/TheLongDark_logo.png' %}" alt="TheLongDark_logo" class="h-8 w-auto sm:h-10">
+                </a>
+            </div>
+
+            <div class="md:flex md:items-center md:gap-12">
+                <nav aria-label="Global">
+                    <ul class="flex items-center gap-6 text-sm">
+                        <li>
+                            <a
+                                    class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                                    href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                    class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                                    href="/"
+                            >
+                                GAMEPLAY
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                    class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                                    href="/"
+                            >
+                                COMMUNITY
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                    class="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                                    href="/"
+                            >
+                                SUPPORT
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="bg-fixed">
+    <video  src="{% static 'video/TheLongDark_background.mp4' %}" autoplay loop muted></video>
+</div>
+<div class="text-sky-400">hello world</div>
+</body>
+</html>
