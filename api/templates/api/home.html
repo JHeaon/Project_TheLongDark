@@ -11,8 +11,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-black" style="font-family: 'Bebas Neue', sans-serif;">
-<header class="bg-black dark:bg-black-100">
-    <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+<header class="bg-black dark:bg-black-100 border-b-2 border-gray-500 max-w-screen-xl mx-auto">
+    <div class="mx-auto max-w-screen px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
             <div class="flex-1 md:flex md:items-center md:gap-12">
                 <a class="block text-teal-600 dark:text-teal-300" href="/">
@@ -87,16 +87,27 @@
 
 {% block contents %}
 
-<div>
-    <video height="1200" width="1700" class="absolute justify-center" src="{% static 'video/TheLongDark_background.mp4' %}" autoplay loop muted></video>
-    <div class="pt-[33vh]"></div>
-    <div class="relative flex flex-col items-center justify-center ">
-        <img src="{% static 'img/TheLongDark_logo.png' %}" alt="TheLongDark_logo">
-        <div class="text-5xl text-white">2023.10.29</div>
+<div class="relative">
+    <video class="flex justify"  src="{% static 'video/TheLongDark_background.mp4' %}" autoplay loop muted></video>
+    <div class="absolute inset-0 mx-auto flex flex-col items-center justify-center">
+        <img class='size-105' src="{% static 'img/TheLongDark_logo.png' %}" alt="TheLongDark_logo">
+        <div class="text-6xl text-white">2023.10.29</div>
     </div>
 </div>
 
 {% endblock contents %}
+
+<footer class="border-t-2 border-gray-500 bg-black flex flex-col min-h-full max-w-screen-xl mx-auto ">
+  <div class="flex flex-col justify-center items-center mx-auto  px-4 py-10 sm:px-6 lg:px-4 space-y-10">
+      <img class="w-32" src="https://www.thelongdark.com/img/logo-hinterland-wordmark.svg"/>
+      <div class="text-white text-center">
+        THE LONG DARK © 2012-2023 Hinterland Studio Inc.<br>
+        "THE LONG DARK", "Hinterland" and the fox logo are registered trademarks or trademarks of Hinterland Studio Inc. <br>
+          All rights reserved.<br>
+      </div>
+
+  </div>
+</footer>
 </body>
 
 </html>
