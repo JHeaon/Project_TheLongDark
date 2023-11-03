@@ -6,7 +6,7 @@ app_name = "api"
 
 urlpatterns = [
     path("", views.home, name="home"),
-    path("gameplay/", views.gameplay, name="gameplay"),
-    path("community/", views.community, name="community"),
+    path("introduce/", views.introduce, name="introduce"),
+    path("news/", views.news, name="news"),
     path("support/", views.support, name="support"),
 ]

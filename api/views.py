@@ -4,11 +4,11 @@ from django.shortcuts import render
 def home(request):
     return render(request, "api/home.html")
 
-def gameplay(request):
-    return render(request, "api/gameplay.html")
+def introduce(request):
+    return render(request, "api/introduce.html")
 
-def community(request):
-    return render(request, "api/community.html")
+def news(request):
+    return render(request, "api/news.html")
 
 def support(request):
     return render(request, "api/support.html")
