@@ -1,0 +1,72 @@
+{% extends "api/home.html" %}
+{% load static %}
+
+
+{% block contents %}
+<div class="max-w-screen-xl mx-auto bg-gray-900 min-h-screen">
+    <div class="justify-center p-10 h-full">
+    <form method="Post" action="{% url 'api:write' %}" enctype='multipart/form-data'>
+        {% csrf_token %}
+          <div class="m-4">
+            <label
+              for="Title"
+              class="block text-3xl font-medium text-gray-700 dark:text-gray-200"
+            >
+              Title
+            </label>
+
+            <input
+              type="text"
+              id="Title"
+              name="title"
+              class="mt-1 w-full rounded-md border-gray-200 bg-white text-3xl text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            />
+          </div>
+
+          <div class="m-4">
+            <label
+              for="Image"
+              class="block text-3xl font-medium text-gray-700 dark:text-gray-200"
+            >
+              Image
+            </label>
+
+            <input
+              type="file"
+              id="Image"
+              name="image"
+              class="mt-1 w-full text-lg text-white"
+            />
+          </div>
+
+
+          <div class="m-4">
+            <label
+              class="block text-3xl font-medium text-gray-700 dark:text-gray-200"
+            >
+              Context
+            </label>
+
+            <input
+              type="textarea"
+              name="context"
+              class="mt-1 w-full h-80 rounded-md border-gray-200 bg-white text-3xl text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            />
+          </div>
+
+
+          <div class="m-4 justify-end col-span-6 sm:flex sm:items-center sm:gap-4">
+            <button
+              class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700 dark:hover:text-white"
+            >
+              Send
+            </button>
+
+          </div>
+        </form>
+
+</div>
+</div>
+
+
+{% endblock contents %}
