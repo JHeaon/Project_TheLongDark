@@ -2,7 +2,7 @@
 Make introduce the longdark homepage
 
 ### date
-23.10.28 ~
+23.10.28 ~ 
 
 ### stack
 - Django

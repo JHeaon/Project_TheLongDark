@@ -13,6 +13,11 @@ def news(request):
     return render(request, "api/news.html", {"posts": posts})
 
 def support(request):
+    if request.method == "POST":
+
+        # Post 요청이 들어오면 내 이메일로 문의 내역이 전송되어야 한다.
+        pass
+
     return render(request, "api/support.html")
 
 def detail(request, pk):
