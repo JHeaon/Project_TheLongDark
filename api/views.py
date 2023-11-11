@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Post, Request
+from .send_email import send_email
 
 
 # Create your views here.
@@ -48,6 +49,8 @@ def support(request):
             email=email,
             context=context,
         )
+
+        send_email(first_name + last_name, email, context)
 
         return render(request, "api/support.html")
 
