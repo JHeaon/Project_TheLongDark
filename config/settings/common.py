@@ -16,7 +16,7 @@ environ.Env.read_env(
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://*']
+CSRF_TRUSTED_ORIGINS = ['https://port-0-project-thelongdark-12fhqa2lloisrec8.sel5.cloudtype.app']
 
 # Application definition
 
