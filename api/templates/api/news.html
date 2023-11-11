@@ -3,20 +3,20 @@
 
 {% block contents %}
 <div class="text-white flex flex-col mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 bg-gray-900 space-y-6 p-4">
-
-    {% for post in posts %}
-    <!-- card -->
-    <div class="group flex flex-col border-t border-y border-white w-full p-3 space-x-4 sm:flex-row sm:p-0">
-        <img class='p-5 w-[512px] h-[400px] group-hover:scale-105' src="{{post.image.url}}">
-        <div class="flex flex-col p-5 space-y-6 overflow-y-auto">
-            <a href='{% url "api:detail" post.id %}' class="text-5xl group-hover:text-blue-300">{{post.title}}</a>
-            <a href='{% url "api:detail" post.id %}' class="group-hover:text-blue-300">
-                <p>{{post.content|truncatechars:800}}</p>
-            </a>
+    {% if posts %}
+        {% for post in posts %}
+        <!-- card -->
+        <div class="group flex flex-col border-t border-y border-white w-full p-3 space-x-4 sm:flex-row sm:p-0">
+            <img class='p-5 w-[512px] h-[400px] group-hover:scale-105' src="{{post.image.url}}">
+            <div class="flex flex-col p-5 space-y-6 overflow-y-auto">
+                <a href='{% url "api:detail" post.id %}' class="text-5xl group-hover:text-blue-300">{{post.title}}</a>
+                <a href='{% url "api:detail" post.id %}' class="group-hover:text-blue-300">
+                    <p>{{post.content|truncatechars:800}}</p>
+                </a>
+            </div>
         </div>
-    </div>
-    {% endfor %}
-
+        {% endfor %}
+    {% endif %}
 
 
 </div>
