@@ -112,7 +112,7 @@ def send_email(name, email, context):
     smtpName = "smtp.naver.com" #smtp 서버 주소
     smtpPort = os.getenv('SMTPPORT') #smtp 포트 번호
 
-    context = "이름 : name\n\n" + "이메일 : email\n\n" + "내용 :" + context
+    context = f"이름 : {name}\n\n" + f"이메일 : {email}\n\n" + "내용 :" + context
     msg = MIMEText(context) #MIMEText(text , _charset = "utf8")
 
     msg['Subject'] = email
