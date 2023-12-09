@@ -8,14 +8,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DEBUG = True
 
 os.getenv = environ.Env(DEBUG=(bool, True))
-environ.Env.read_env(
-    env_file=os.path.join(BASE_DIR, '.env')
-)
+environ.Env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://port-0-project-thelongdark-12fhqa2lloisrec8.sel5.cloudtype.app']
+ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://port-0-project-thelongdark-12fhqa2lloisrec8.sel5.cloudtype.app"
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -24,9 +24,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     # Third party apps
-
     # Local apps
     "api",
 ]
@@ -72,13 +70,13 @@ WSGI_APPLICATION = "config.wsgi.application"
 # }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT"),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
     }
 }
 
@@ -109,13 +107,13 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / "static",
 ]
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

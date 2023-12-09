@@ -13,14 +13,15 @@ def introduce(request):
 
 
 def news(request):
-    posts = Post.objects.filter().order_by('-created_at')
+    posts = Post.objects.filter().order_by("-created_at")
     return render(request, "api/news.html", {"posts": posts})
+
 
 def write(request):
     if request.method == "POST":
         title = request.POST.get("title")
         context = request.POST.get("context")
-        image = request.FILES.get('image')
+        image = request.FILES.get("image")
         print(title, context, image)
 
         Post.objects.create(
@@ -37,7 +38,6 @@ def write(request):
 
 def support(request):
     if request.method == "POST":
-
         first_name = request.POST.get("first_name")
         last_name = request.POST.get("last_name")
         email = request.POST.get("email")
