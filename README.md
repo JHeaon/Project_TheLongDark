@@ -45,8 +45,6 @@ SMTPPORT=
 <img src="readme_img/page2.png">
 <img src="readme_img/page3.png">
 <img src="readme_img/page4.png">
-<img src="readme_img/page5.png">
-
 
 <img src="readme_img/page6.png">
 
