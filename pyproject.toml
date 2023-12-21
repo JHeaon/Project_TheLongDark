@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "project-thelongdark"
+version = "0.1.0"
+description = ""
+authors = ["JHeaon <j3heawon@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+asgiref = "3.7.2"
+django = "4.2.6"
+django-environ = "0.11.2"
+pillow = "10.1.0"
+psycopg2-binary = "2.9.9"
+python-dotenv = "1.0.0"
+sqlparse = "0.4.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
