@@ -2,7 +2,6 @@ import os
 import environ
 from pathlib import Path
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 DEBUG = True
@@ -13,9 +12,6 @@ environ.Env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = "wjddudgns!tjdodfla@wjdgodnjs#wjdalgP$"
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = [
-    "https://port-0-project-thelongdark-12fhqa2lloisrec8.sel5.cloudtype.app"
-]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -25,8 +21,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Third party apps
+    "rest_framework",
+    "rest_framework.authtoken",
+    'drf_spectacular',
     # Local apps
-    "api",
+    "api.apps.ApiConfig",
+    "core.apps.CoreConfig",
+    "accounts.apps.AccountsConfig",
 ]
 
 MIDDLEWARE = [
@@ -40,6 +41,20 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        "rest_framework.authentication.TokenAuthentication"
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 TEMPLATES = [
     {
@@ -59,14 +74,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 
@@ -92,7 +105,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
