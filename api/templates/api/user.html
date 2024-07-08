@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contents %}
+    <div class="container max-w-6xl mx-auto py-8">
+        <!-- Post List -->
+        <div class="space-y-8">
+            <!-- post -->
+            <div class="flex items-center p-6 rounded-lg">
+                <img src="{% static 'test_img/1.png' %}"
+                     class="flex-shrink-0 h-80 w-80 object-cover bg-gray-700 rounded-full" alt=""/>
+                <div class="ml-6">
+                    <h2 class="text-3xl font-semibold text-white">Introucing the new product line</h2>
+                    <p class="text-xl text-gray-400">John Doe • May 1, 2023</p>
+                    <p class="text-2xl font-semibold text-white">Introucing the new product line Introucing the new
+                        product lineIntroucing the new product lineIntroucing the new product lineIntroucing the new
+                        product lineIntroucing the new product lineIntroucing the new product line</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

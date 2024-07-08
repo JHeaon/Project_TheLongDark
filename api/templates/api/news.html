@@ -1,36 +1,53 @@
-{% extends "api/home.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block contents %}
-<div class="text-white flex flex-col mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 bg-gray-900 space-y-6 p-4">
-    {% if posts %}
-        {% for post in posts %}
-        <!-- card -->
-        <div class="group flex flex-col border-t border-y border-white w-full p-3 space-x-4 sm:flex-row sm:p-0">
-            {% if post.image %}
-            <img class='p-5 w-[512px] h-[400px] group-hover:scale-105' src="{{post.image.url}}">
-            {% endif %}
-            <div class="flex flex-col p-5 space-y-6 overflow-y-auto">
-                <a href='{% url "api:detail" post.id %}' class="text-5xl group-hover:text-blue-300">{{post.title}}</a>
-                <a href='{% url "api:detail" post.id %}' class="group-hover:text-blue-300">
-                    <p>{{post.content|truncatechars:800}}</p>
+    <div class="container max-w-6xl mx-auto py-8">
+        <!-- 포스트 리스트 -->
+        <div class="space-y-6">
+            <!-- 포스트 -->
+            <a href="{% url 'api:news_detail' 1 %}" class="flex items-center p-6 bg-gray-800 rounded-lg">
+                <img src="{% static 'test_img/1.png' %}" class="flex-shrink-0 h-50 w-80 object-cover bg-gray-700"
+                     alt=""/>
+                <div class="ml-6">
+                    <h2 class="text-xl font-semibold text-white">Introucing the new product line</h2>
+                    <p class="text-gray-400">John Doe • May 1, 2023</p>
+                    <p class="text-lg font-semibold text-white">Introucing the new product line Introucing the new
+                        product lineIntroucing the new product lineIntroucing the new product lineIntroucing the new
+                        product lineIntroucing the new product lineIntroucing the new product line</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- 글쓰기 버튼 -->
+        <!-- TODO: 유저가 관리자일때만 공지글을 작성 할 수 있도록 설정하기 -->
+        <div class="flex justify-end mt-4">
+            <a href="{% url "api:news_write" %}"
+               class="inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">Write</a>
+        </div>
+
+        <!-- 페이징네이션 -->
+        <div class="flex items-center justify-between mt-8">
+            <span class="text-gray-400">Showing 1-10 of 50 posts</span>
+            <div class="flex space-x-1">
+                <a href="#" class="p-2 text-gray-500 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                         class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+                <a href="#" class="p-2 text-white bg-gray-700 rounded">1</a>
+                <a href="#" class="p-2 text-gray-500 hover:text-white">2</a>
+                <a href="#" class="p-2 text-gray-500 hover:text-white">3</a>
+                <a href="#" class="p-2 text-gray-500 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                         class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                 </a>
             </div>
         </div>
-        {% endfor %}
-    {% endif %}
+    </div>
 
-
-</div>
-<div class="flex max-w-screen-xl mx-auto my-4 justify-end">
-    <a href="{% url 'api:write' %}">
-            <button
-      class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700 dark:hover:text-white"
-    >
-      Write
-    </button>
-    </a>
-
-</div>
 
 {% endblock contents %}

@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>The Long Dark</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="bg-black min-h-screen flex flex-col justify-between">
+
+<header class="bg-black border-b-2 border-gray-500 w-full">
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+            <!-- 홈 이동 -->
+            <a href="{% url "api:home" %}" class="text-teal-600 dark:text-teal-300">
+                <img src="{% static 'img/logo.png' %}" alt="TheLongDark_logo" class="h-8 w-auto sm:h-10">
+            </a>
+            <!-- 각 페이지 이동 -->
+            <nav class="hidden md:flex space-x-6 text-white text-4xl">
+                <a href='{% url "api:introduce" %}' class="hover:text-gray-400">INTRODUCE</a>
+                <a href='{% url "api:news" %}' class="hover:text-gray-400">NEWS</a>
+                <a href='{% url "api:community" %}' class="hover:text-gray-400">COMMUNITY</a>
+                <a href='{% url "api:support" %}' class="hover:text-gray-400">SUPPORT</a>
+                <a href='{% url "api:login" %}' class="hover:text-gray-400">LOGIN</a>
+            </nav>
+        </div>
+    </div>
+</header>
+
+{% block contents %}
+
+<main class="relative flex-grow">
+    <video class="video-background" src="{% static 'video/TheLongDark_background.mp4' %}" autoplay loop muted></video>
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-white">
+        <h1 class="text-6xl md:text-8xl">THE LONG DARK</h1>
+        <p class="text-3xl md:text-4xl">2024.07.04</p>
+    </div>
+</main>
+
+{% endblock %}
+
+<footer class="bg-black border-t-2 border-gray-500 w-full">
+    <div class="max-w-screen-xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex items-center text-white space-x-6">
+        <img class="w-16" src="https://www.thelongdark.com/img/logo-hinterland-wordmark.svg" alt="Hinterland Logo"/>
+        <p class="text-sm">
+            THE LONG DARK © 2012-2024 Hinterland Studio Inc.<br>
+            "THE LONG DARK", "Hinterland" and the fox logo are registered trademarks or trademarks of Hinterland Studio Inc. <br>
+            All rights reserved.
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>
