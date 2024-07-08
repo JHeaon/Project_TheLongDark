@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.db import IntegrityError
+from django.core.paginator import Paginator
 from django.views import View
 from django.contrib.auth import (
     authenticate,
@@ -31,7 +32,15 @@ class News(View):
             return render(request, "api/news_detail.html", context=context)
 
         news_list = NewsPost.objects.all()
-        context = {"news_list": news_list}
+        paginator = Paginator(news_list, 3)
+
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+            "news_list": news_list,
+            "page_obj": page_obj,
+        }
         return render(request, self.template_name, context=context)
 
     def post(self, request, pk):

@@ -6,23 +6,23 @@
         <!-- 포스트 리스트 -->
         <div class="space-y-6">
             <!-- 포스트 -->
-            {% if news_list %}
-                {% for news in news_list %}
+            {% if page_obj %}
+                {% for news in page_obj %}
                     <a href="{% url 'api:news_detail' news.id %}" class="flex items-center p-6 bg-gray-800 rounded-lg">
                         {% if news.image %}
                             <img src="{{ news.image.url }}" class="flex-shrink-0 h-50 w-80 object-cover bg-gray-700"
                                  alt=""/>
                         {% endif %}
-                        <div class="ml-6">
+                        <div class="ml-6 overflow-hidden">
                             <h2 class="text-xl font-semibold text-white">{{ news.title }}</h2>
                             <p class="text-gray-400">{{ user.name }} | {{ news.created_at }}</p>
-                            <p class="text-lg font-semibold text-white">{{ news.contents }}</p>
-                            <h1 class="text-white">{{ news.id }}</h1>
+                            <p class="text-lg font-semibold text-white break-words">
+                                {{ news.contents|truncatechars:500 }}
+                            </p>
                         </div>
                     </a>
                 {% endfor %}
             {% endif %}
-
         </div>
 
         <!-- 글쓰기 버튼 -->
@@ -34,29 +34,35 @@
         {% endif %}
 
         <!-- 페이징네이션 -->
-        {% if news_list %}
-        <div class="flex items-center justify-between mt-8">
-            <span class="text-gray-400">Showing 1-10 of {{ news.count }} posts</span>
-            <div class="flex space-x-1">
-                <a href="#" class="p-2 text-gray-500 hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                         class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </a>
-                <a href="#" class="p-2 text-white bg-gray-700 rounded">1</a>
-                <a href="#" class="p-2 text-gray-500 hover:text-white">2</a>
-                <a href="#" class="p-2 text-gray-500 hover:text-white">3</a>
-                <a href="#" class="p-2 text-gray-500 hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                         class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </a>
+        {% if page_obj.has_other_pages %}
+            <div class="flex items-center justify-between mt-8">
+                <span class="text-gray-400">Showing {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ page_obj.paginator.count }} posts</span>
+                <div class="flex space-x-1">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="p-2 text-gray-500 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                 class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                        </a>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <a href="?page={{ num }}" class="p-2 text-white bg-gray-700 rounded">{{ num }}</a>
+                        {% else %}
+                            <a href="?page={{ num }}" class="p-2 text-gray-500 hover:text-white">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="p-2 text-gray-500 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                 class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    {% endif %}
+                </div>
             </div>
-        </div>
         {% endif %}
     </div>
-
-
 {% endblock contents %}
