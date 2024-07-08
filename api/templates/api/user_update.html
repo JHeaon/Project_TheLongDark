@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contents %}
+    <div class="container max-w-6xl mx-auto py-8">
+        <!-- Post List -->
+        <div class="space-y-8">
+            <!-- post -->
+            <form method="post" action="{% url 'api:user_update' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="flex items-center p-6 rounded-lg bg-gray-900">
+                    <div class="relative flex-shrink-0 h-80 w-80">
+
+                        {% if user.image %}
+                            <img src="{{ user.image.url }}"
+                                 class="h-full w-full object-cover bg-gray-700 rounded-full cursor-pointer"
+                                 alt="User Image"
+                                 id="user-image"
+                                 onclick="document.getElementById('image-input').click()"/>
+                        {% else %}
+                            <img src="{% static "img/him.png"%}"
+                                 class="h-full w-full object-cover bg-gray-700 rounded-full cursor-pointer"
+                                 alt="User Image"
+                                 id="user-image"
+                                 onclick="document.getElementById('image-input').click()"></img>
+
+                        {% endif %}
+                        <input type="file" id="image-input" name="image" class="hidden" onchange="updateImage(event)"/>
+                    </div>
+                    <div class="ml-6 flex-1">
+                        <h2 class="text-3xl font-semibold text-white">{{ request.user.username }}</h2>
+                        <p class="text-xl text-gray-400">{{ request.user.date_joined }}</p>
+                        <label for="content">
+                            <textarea id="content" name="introduce" rows="10"
+                                      class="mt-4 py-4 px-4 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ request.user.introduce }}</textarea>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-4">
+                    <button type="submit"
+                            class="inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function updateImage(event) {
+            const image = document.getElementById('user-image');
+            const file = event.target.files[0];
+            if (file) {
+                const imgURL = URL.createObjectURL(file);
+                image.src = imgURL;
+            }
+        }
+    </script>
+{% endblock %}

@@ -40,8 +40,9 @@
                 <a href='{% url "api:news" %}' class="hover:text-gray-400">NEWS</a>
                 <a href='{% url "api:community" %}' class="hover:text-gray-400">COMMUNITY</a>
                 <a href='{% url "api:support" %}' class="hover:text-gray-400">SUPPORT</a>
+                <div>|</div>
                 {% if user.is_authenticated %}
-                    <a href='{% url "api:user" %}' class="hover:text-gray-400">{{ user.name }}`s</a>
+                    <a href='{% url "api:user" %}' class="hover:text-gray-400">{{ user.name }}</a>
                     <a href='{% url "api:logout" %}' class="hover:text-gray-400">LOGOUT</a>
                 {% else %}
                     <a href='{% url "api:login" %}' class="hover:text-gray-400">LOGIN</a>

@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, reverse
 from django.db import IntegrityError
-
 from django.views import View
 from django.contrib.auth import (
     authenticate,
@@ -88,6 +87,7 @@ class signup(View):
         user_data = {
             "email": request.POST.get("email"),
             "password": request.POST.get("password"),
+            "name": request.POST.get("name"),
         }
 
         try:
@@ -104,3 +104,21 @@ class logout(View):
     def get(self, request):
         auth_logout(request)
         return redirect(reverse("api:home"))
+
+
+class user_update(View):
+    template_name = "api/user_update.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        user = request.user
+        user.introduce = request.POST.get("introduce")
+
+        if "image" in request.FILES:
+            user.image = request.FILES.get("image")
+
+        user.save()
+
+        return redirect(reverse("api:user"))

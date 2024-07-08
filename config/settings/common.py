@@ -118,3 +118,17 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
+
+
+import tempfile
+import os
+
+# 임시 디렉토리 경로 설정
+TEMP_DIR = os.path.join(BASE_DIR, "tmp")
+
+# 임시 디렉토리 생성 (존재하지 않는 경우)
+if not os.path.exists(TEMP_DIR):
+    os.makedirs(TEMP_DIR)
+
+# Django의 FILE_UPLOAD_TEMP_DIR 설정
+FILE_UPLOAD_TEMP_DIR = TEMP_DIR
