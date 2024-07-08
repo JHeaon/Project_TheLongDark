@@ -2,14 +2,12 @@
 {% load static %}
 
 {% block contents %}
-
-
     <div class="w-full max-w-6xl mx-auto px-4 py-8">
         {% if news %}
             <div class="grid grid-cols-1 gap-8">
                 <div class="text-white text-center">
                     <!-- 제목 -->
-                    <h1 class="text-6xl font-semibold mb-2 ">{{ news.title }}</h1>
+                    <h1 class="text-6xl font-semibold mb-2">{{ news.title }}</h1>
                     <!-- 날짜 -->
                     <span class="text-gray-400 text-2xl">{{ news.created_at }}</span>
                 </div>
@@ -17,15 +15,15 @@
                 <div class="bg-gray-800 text-white rounded-lg overflow-hidden shadow-md">
                     <!-- 이미지 -->
                     {% if news.image %}
-                        <img src={{ news.image.url }} width="800" alt="Post Image"
+                        <img src="{{ news.image.url }}" width="800" alt="Post Image"
                              class="w-full h-full object-cover"/>
                     {% endif %}
                 </div>
                 <div class="flex flex-col justify-between text-white">
                     <div>
                         <!-- 내용 -->
-                        <p class="text-gray-400 text-2xl">
-                            {{ news.contents }}
+                        <p class="text-lg font-semibold text-white break-words whitespace-pre-wrap">
+                            {{ news.contents|linebreaks }}
                         </p>
                     </div>
                     <div class="mt-6">
@@ -40,45 +38,61 @@
                                 </div>
                                 <span class="text-white text-xl">{{ news.user.name }}</span>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
 
-        {% endif %}
+            <!-- 수정, 삭제 버튼 -->
+            {% if user.is_staff %}
+                <div class="flex justify-end space-x-3">
+                    <a href="{% url 'api:news_update' news.id %}"
+                       class="mt-4 inline-block bg-yellow-500 border border-transparent text-white font-medium px-6 py-2 rounded-md hover:bg-yellow-600 transition">
+                        Edit
+                    </a>
+                    <a href="{% url 'api:news_delete' news.id %}"
+                       class="mt-4 inline-block bg-red-500 border border-transparent text-white font-medium px-6 py-2 rounded-md hover:bg-red-600 transition">
+                        Delete
+                    </a>
+                </div>
+            {% endif %}
 
+        {% endif %}
 
         <!-- 수평선 추가 -->
         <hr class="my-8 border-gray-600"/>
 
         <!-- 댓글 창 -->
-        <div class="flex justify-center items-start gap-4 py-5">
-            <div class="w-8 h-8 border rounded-full overflow-hidden">
-                {% if user.image %}
-                    <img src="{{ user.image.url }}" alt="User Avatar" class="w-full h-full object-cover"/>
-                {% endif %}
-            </div>
-            <div class="flex-1">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-medium text-white text-xl">{{ user.name }}</h3>
+
+        {% if not user.is_anonymous %}
+
+            <div class="flex justify-center items-start gap-4 py-5">
+                <div class="w-8 h-8 border rounded-full overflow-hidden">
+                    {% if user.image %}
+                        <img src="{{ user.image.url }}" alt="User Avatar" class="w-full h-full object-cover"/>
+                    {% endif %}
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-white text-xl">{{ user.name }}</h3>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <form method="post", action={% url "api:news_detail" news.id %}>
-            {% csrf_token %}
-            <textarea name="contents"
-                      class="mt-1 w-full h-20 rounded-md border-gray-200 bg-white text-xl text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-            ></textarea>
-            <div class="flex items-center justify-end">
-                <button type="submit"
-                        class="mt-4 inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">
-                    Write
-                </button>
-            </div>
-        </form>
+            <form method="post" action="{% url 'api:news_detail' news.id %}">
+                {% csrf_token %}
+                <textarea name="contents"
+                          class="mt-1 w-full h-20 rounded-md border-gray-200 bg-white text-xl text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                ></textarea>
+                <div class="flex items-center justify-end space-x-4">
+                    <button type="submit"
+                            class="mt-4 inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">
+                        Write
+                    </button>
+                </div>
+            </form>
 
+        {% endif %}
 
         {% if comments %}
             <div class="mt-8 text-white py-6">
@@ -86,22 +100,22 @@
                 <div class="space-y-10">
                     <!-- 코멘트 -->
                     {% for comment in comments %}
-                    <div class="flex items-start gap-4">
-                        <div class="w-8 h-8 border rounded-full overflow-hidden">
-                            <img src="{{ comment.user.image.url }}" alt="User Avatar" class="w-full h-full object-cover"/>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center justify-between">
-                                <h3 class="font-medium">{{ comment.user.name }}</h3>
-                                <span class="text-xs text-gray-400">{{ comment.created_at }}</span>
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 border rounded-full overflow-hidden">
+                                <img src="{{ comment.user.image.url }}" alt="User Avatar"
+                                     class="w-full h-full object-cover"/>
                             </div>
-                            <p class="text-gray-400">
-                                {{ comment.contents }}
-                            </p>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-medium">{{ comment.user.name }}</h3>
+                                    <span class="text-xs text-gray-400">{{ comment.created_at }}</span>
+                                </div>
+                                <p class="text-gray-400">
+                                    {{ comment.contents }}
+                                </p>
+                            </div>
                         </div>
-                    </div>
                     {% endfor %}
-
                 </div>
             </div>
         {% endif %}

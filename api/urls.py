@@ -10,6 +10,8 @@ urlpatterns = [
     path("introduce/", views.introduce, name="introduce"),
     path("news/", views.News.as_view(), name="news"),
     path("news/<int:pk>", views.News.as_view(), name="news_detail"),
+    path("news/<int:pk>/update", views.NewsUpdate.as_view(), name="news_update"),
+    path("news/<int:pk>/delete", views.NewsDelete.as_view(), name="news_delete"),
     path("news_write/", views.NewsWrite.as_view(), name="news_write"),
     # 커뮤니티 페이지
     path("community/", views.community, name="community"),

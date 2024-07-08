@@ -2,46 +2,102 @@
 {% load static %}
 
 {% block contents %}
-<div class="container mx-auto px-4 py-8 max-w-4xl bg-gray-900 rounded-lg shadow-lg">
-    <h1 class="text-3xl font-bold mb-8 text-white">글 작성</h1>
-    <form class="space-y-6" method="post" action="{% url "api:news_write" %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div>
-            <label for="title" class="block text-lg font-medium text-white">제목</label>
-            <input type="text" id="title" name="title" placeholder="제목을 입력하세요" class="px-4 py-4 mt-1 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
-        </div>
-        <div>
-            <label for="image" class="block text-lg font-medium text-white">이미지 첨부</label>
-            <input type="file" id="image" name="image" class="hidden" onchange="displayImage(event)">
-            <label for="image" class="inline-block mt-1 rounded-md border-gray-700 bg-gray-800 text-center cursor-pointer py-3 px-4 text-white hover:bg-gray-700">
-                이미지 선택
-            </label>
-            <div id="image-container" class="mt-4"></div>
-        </div>
-        <div>
-            <label for="content" class="block text-lg font-medium text-white">내용</label>
-            <div class="mt-1">
-                <textarea id="content" name="contents" rows="10" placeholder="내용을 입력하세요" class="py-4 px-4 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
-            </div>
-        </div>
-        <div class="flex justify-end space-x-4">
-            <button type="button" class="px-4 py-2 rounded-md border border-gray-700 text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">취소</button>
-            <button type="submit" class="px-4 py-2 rounded-md border border-white bg-black text-white hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">저장</button>
-        </div>
-    </form>
-</div>
 
-<script>
-function displayImage(event) {
-    const imageContainer = document.getElementById('image-container');
-    imageContainer.innerHTML = '';
-    const file = event.target.files[0];
-    if (file) {
-        const img = document.createElement('img');
-        img.src = URL.createObjectURL(file);
-        img.className = 'mt-4 w-full h-auto rounded-md';
-        imageContainer.appendChild(img);
-    }
-}
-</script>
+    {% if news_post %}
+        <div class="container mx-auto px-4 py-8 max-w-4xl bg-gray-900 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold mb-8 text-white">글 작성</h1>
+            <form class="space-y-6" method="post" action="{% url 'api:news_update' news_post.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div>
+                    <label for="title" class="block text-lg font-medium text-white">제목</label>
+                    <input type="text" id="title" name="title" placeholder="제목을 입력하세요" value="{{ news_post.title }}"
+                           class="px-4 py-4 mt-1 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="image" class="block text-lg font-medium text-white">이미지 첨부</label>
+                    <input type="file" id="image" name="image" class="hidden" onchange="displayImage(event)">
+                    <label for="image"
+                           class="inline-block mt-1 rounded-md border-gray-700 bg-gray-800 text-center cursor-pointer py-3 px-4 text-white hover:bg-gray-700">
+                        이미지 선택
+                    </label>
+                    <div id="image-container" class="mt-4">
+                        {% if news_post.image %}
+                            <img src="{{ news_post.image.url }}" class="mt-4 w-full h-auto rounded-md">
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
+                    <label for="content" class="block text-lg font-medium text-white">내용</label>
+                    <div class="mt-1">
+                        <textarea id="content" name="contents" rows="10" placeholder="내용을 입력하세요"
+                                  class="py-4 px-4 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ news_post.contents }}</textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <a href="{% url "api:news" %}" class="px-4 py-2 rounded-md border border-gray-700 text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        취소
+                    </a>
+                    <button type="submit"
+                            class="px-4 py-2 rounded-md border border-white bg-black text-white hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                        저장
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+    {% else %}
+
+        <div class="container mx-auto px-4 py-8 max-w-4xl bg-gray-900 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold mb-8 text-white">글 작성</h1>
+            <form class="space-y-6" method="post" action="{% url "api:news_write" %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div>
+                    <label for="title" class="block text-lg font-medium text-white">제목</label>
+                    <input type="text" id="title" name="title" placeholder="제목을 입력하세요"
+                           class="px-4 py-4 mt-1 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="image" class="block text-lg font-medium text-white">이미지 첨부</label>
+                    <input type="file" id="image" name="image" class="hidden" onchange="displayImage(event)">
+                    <label for="image"
+                           class="inline-block mt-1 rounded-md border-gray-700 bg-gray-800 text-center cursor-pointer py-3 px-4 text-white hover:bg-gray-700">
+                        이미지 선택
+                    </label>
+                    <div id="image-container" class="mt-4"></div>
+                </div>
+                <div>
+                    <label for="content" class="block text-lg font-medium text-white">내용</label>
+                    <div class="mt-1">
+                        <textarea id="content" name="contents" rows="10" placeholder="내용을 입력하세요"
+                                  class="py-4 px-4 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-4">
+                     <a href="{% url "api:news" %}" class="px-4 py-2 rounded-md border border-gray-700 text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        취소
+                    </a>
+                    <button type="submit"
+                            class="px-4 py-2 rounded-md border border-white bg-black text-white hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                        저장
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    {% endif %}
+
+    <script>
+        function displayImage(event) {
+            const imageContainer = document.getElementById('image-container');
+            imageContainer.innerHTML = '';
+            const file = event.target.files[0];
+            if (file) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.className = 'mt-4 w-full h-auto rounded-md';
+                imageContainer.appendChild(img);
+            }
+        }
+    </script>
 {% endblock contents %}

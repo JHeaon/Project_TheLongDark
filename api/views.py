@@ -31,7 +31,7 @@ class News(View):
             context = {"news": news, "comments": comments}
             return render(request, "api/news_detail.html", context=context)
 
-        news_list = NewsPost.objects.all()
+        news_list = NewsPost.objects.all().order_by("-id")
         paginator = Paginator(news_list, 3)
 
         page_number = request.GET.get("page")
@@ -163,3 +163,25 @@ class UserUpdate(View):
         user.save()
 
         return redirect(reverse("api:user"))
+
+
+class NewsUpdate(View):
+    def get(self, request, pk):
+        news_post = get_object_or_404(NewsPost, pk=pk)
+        context = {"news_post": news_post}
+        return render(request, "api/news_write.html", context=context)
+
+    def post(self, request, pk):
+        news_post = get_object_or_404(NewsPost, pk=pk)
+        news_post.title = request.POST.get("title")
+        news_post.contents = request.POST.get("contents")
+        news_post.image = request.FILES.get("image")
+        news_post.save()
+        return redirect(reverse("api:news"))
+
+
+class NewsDelete(View):
+    def get(self, request, pk):
+        news_post = get_object_or_404(NewsPost, pk=pk)
+        news_post.delete()
+        return redirect(reverse("api:news"))
