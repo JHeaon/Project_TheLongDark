@@ -36,7 +36,7 @@ def detail(request):
     return render(request, "api/detail.html")
 
 
-class login(View):
+class Login(View):
     template_name = "api/login.html"
 
     def get(self, request):
@@ -76,7 +76,7 @@ def user(request):
     return render(request, "api/user.html")
 
 
-class signup(View):
+class SignUp(View):
     template_name = "api/signup.html"
 
     def get(self, reqeust):
@@ -100,13 +100,13 @@ class signup(View):
         return redirect(reverse("api:home"))
 
 
-class logout(View):
+class Logout(View):
     def get(self, request):
         auth_logout(request)
         return redirect(reverse("api:home"))
 
 
-class user_update(View):
+class UserUpdate(View):
     template_name = "api/user_update.html"
 
     def get(self, request):

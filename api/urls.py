@@ -17,9 +17,9 @@ urlpatterns = [
     path("community_write/", views.community_write, name="community_write"),
     # 유저 페이지
     path("support/", views.support, name="support"),
-    path("login/", views.login.as_view(), name="login"),
-    path("logout/", views.logout.as_view(), name="logout"),
-    path("signup/", views.signup.as_view(), name="signup"),
+    path("login/", views.Login.as_view(), name="login"),
+    path("logout/", views.Logout.as_view(), name="logout"),
+    path("signup/", views.SignUp.as_view(), name="signup"),
     path("user/", views.user, name="user"),
-    path("user_update/", views.user_update.as_view(), name="user_update"),
+    path("user_update/", views.UserUpdate.as_view(), name="user_update"),
 ]
