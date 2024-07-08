@@ -23,13 +23,12 @@
                                  alt="User Image"
                                  id="user-image"
                                  onclick="document.getElementById('image-input').click()"></img>
-
                         {% endif %}
                         <input type="file" id="image-input" name="image" class="hidden" onchange="updateImage(event)"/>
                     </div>
                     <div class="ml-6 flex-1">
-                        <h2 class="text-3xl font-semibold text-white">{{ request.user.username }}</h2>
-                        <p class="text-xl text-gray-400">{{ request.user.date_joined }}</p>
+                        <h2 class="text-3xl font-semibold text-white">{{ user.name }}</h2>
+                        <p class="text-xl text-gray-400">{{ user.created_at }}</p>
                         <label for="content">
                             <textarea id="content" name="introduce" rows="10"
                                       class="mt-4 py-4 px-4 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ request.user.introduce }}</textarea>
