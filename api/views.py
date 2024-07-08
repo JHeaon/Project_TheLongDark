@@ -1,4 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
+from django.db import IntegrityError
+
+from django.views import View
+from django.contrib.auth import (
+    authenticate,
+    login as auth_login,
+    get_user_model,
+    logout as auth_logout,
+)
 
 
 def home(request):
@@ -28,8 +37,30 @@ def detail(request):
     return render(request, "api/detail.html")
 
 
-def login(request):
-    return render(request, "api/login.html")
+class login(View):
+    template_name = "api/login.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        user_data = {
+            "email": request.POST.get("email"),
+            "password": request.POST.get("password"),
+        }
+
+        user = authenticate(**user_data)
+        print(user)
+
+        if user:
+            auth_login(request, user)
+            return redirect(reverse("api:home"))
+
+        return render(
+            request,
+            self.template_name,
+            {"error": "유효하지 않은 이메일 혹은 비밀번호 입니다."},
+        )
 
 
 def community(request, pk=None):
@@ -46,5 +77,30 @@ def user(request):
     return render(request, "api/user.html")
 
 
-def signup(request):
-    return render(request, "api/signup.html")
+class signup(View):
+    template_name = "api/signup.html"
+
+    def get(self, reqeust):
+        return render(reqeust, self.template_name)
+
+    def post(self, request):
+
+        user_data = {
+            "email": request.POST.get("email"),
+            "password": request.POST.get("password"),
+        }
+
+        try:
+            user = get_user_model().objects.create_user(**user_data)
+        except IntegrityError:
+            return render(
+                request, self.template_name, {"error": "이미 존재하는 이메일 입니다. "}
+            )
+
+        return redirect(reverse("api:home"))
+
+
+class logout(View):
+    def get(self, request):
+        auth_logout(request)
+        return redirect(reverse("api:home"))

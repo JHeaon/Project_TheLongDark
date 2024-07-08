@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Timestamp(models.Model):
+class TimeStampedModel(models.Model):
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
