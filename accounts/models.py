@@ -28,7 +28,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     introduce = models.TextField(blank=True)
@@ -45,3 +45,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 class EmailVerification(TimeStampedModel):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     key = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return f"{self.user.email}"
