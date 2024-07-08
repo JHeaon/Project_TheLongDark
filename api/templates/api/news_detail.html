@@ -3,118 +3,108 @@
 
 {% block contents %}
 
+
     <div class="w-full max-w-6xl mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 gap-8">
-            <div class="text-white text-center">
-                <!-- 제목 -->
-                <h1 class="text-6xl font-semibold mb-2 ">Stunning Sunset Landscape</h1>
-                <!-- 날짜 -->
-                <span class="text-gray-400 text-2xl">May 15, 2023</span>
-            </div>
-
-            <div class="bg-gray-800 text-white rounded-lg overflow-hidden shadow-md">
-                <!-- 이미지 -->
-                <img src="{% static 'img/TheLongDark_logo.png' %}" width="800" alt="Post Image"
-                     class="w-full h-full object-cover"/>
-            </div>
-            <div class="flex flex-col justify-between text-white">
-                <div>
-                    <!-- 내용 -->
-                    <p class="text-gray-400 text-2xl">
-                        Capture the beauty of nature with this breathtaking sunset landscape photograph. Vibrant colors
-                        and a
-                        serene atmosphere make this a truly captivating image.
-                    </p>
+        {% if news %}
+            <div class="grid grid-cols-1 gap-8">
+                <div class="text-white text-center">
+                    <!-- 제목 -->
+                    <h1 class="text-6xl font-semibold mb-2 ">{{ news.title }}</h1>
+                    <!-- 날짜 -->
+                    <span class="text-gray-400 text-2xl">{{ news.created_at }}</span>
                 </div>
-                <div class="mt-6">
-                    <div class="flex items-center gap-4 text-sm">
-                        <div class="flex gap-2 items-center">
-                            <!-- 글쓴이 유저 정보 첨부 -->
-                            <div class="w-6 h-6 border rounded-full overflow-hidden">
-                                <img src="/placeholder-user.jpg" alt="User Avatar" class="w-full h-full object-cover"/>
+
+                <div class="bg-gray-800 text-white rounded-lg overflow-hidden shadow-md">
+                    <!-- 이미지 -->
+                    {% if news.image %}
+                        <img src={{ news.image.url }} width="800" alt="Post Image"
+                             class="w-full h-full object-cover"/>
+                    {% endif %}
+                </div>
+                <div class="flex flex-col justify-between text-white">
+                    <div>
+                        <!-- 내용 -->
+                        <p class="text-gray-400 text-2xl">
+                            {{ news.contents }}
+                        </p>
+                    </div>
+                    <div class="mt-6">
+                        <div class="flex items-center gap-4 text-sm">
+                            <div class="flex gap-2 items-center">
+                                <!-- 글쓴이 유저 정보 첨부 -->
+                                <div class="w-6 h-6 border rounded-full overflow-hidden">
+                                    {% if news.user.image %}
+                                        <img src="{{ news.user.image.url }}" alt="User Avatar"
+                                             class="w-full h-full object-cover"/>
+                                    {% endif %}
+                                </div>
+                                <span class="text-white text-xl">{{ news.user.name }}</span>
                             </div>
-                            <span class="text-white text-xl">John Doe</span>
-                        </div>
 
-                    </div>
-                    <div class="flex justify-end items-center gap-4 mt-4">
-                        <div class="flex items-center px-4 py-2 border rounded text-white">
-                            <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                 stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
-                            </svg>
-                            Comment
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+        {% endif %}
 
 
         <!-- 수평선 추가 -->
         <hr class="my-8 border-gray-600"/>
 
-
+        <!-- 댓글 창 -->
         <div class="flex justify-center items-start gap-4 py-5">
             <div class="w-8 h-8 border rounded-full overflow-hidden">
-                <img src="/placeholder-user.jpg" alt="User Avatar" class="w-full h-full object-cover"/>
+                {% if user.image %}
+                    <img src="{{ user.image.url }}" alt="User Avatar" class="w-full h-full object-cover"/>
+                {% endif %}
             </div>
             <div class="flex-1">
                 <div class="flex items-center justify-between">
-                    <h3 class="font-medium text-white text-xl">Jane Doe</h3>
+                    <h3 class="font-medium text-white text-xl">{{ user.name }}</h3>
                 </div>
             </div>
         </div>
 
-        <textarea
-                id="Context"
-                name="context"
-                class="mt-1 w-full h-40 rounded-md border-gray-200 bg-white text-3xl text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-        ></textarea>
+        <form method="post", action={% url "api:news_detail" news.id %}>
+            {% csrf_token %}
+            <textarea name="contents"
+                      class="mt-1 w-full h-20 rounded-md border-gray-200 bg-white text-xl text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            ></textarea>
+            <div class="flex items-center justify-end">
+                <button type="submit"
+                        class="mt-4 inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">
+                    Write
+                </button>
+            </div>
+        </form>
 
 
-        <div class="flex justify-end mt-4">
-            <a href="#"
-               class="inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">Write</a>
-        </div>
-
-        <div class="mt-8 text-white">
-            <h2 class="text-2xl font-semibold mb-4">Comments</h2>
-            <div class="space-y-4">
-                <div class="flex items-start gap-4">
-                    <div class="w-8 h-8 border rounded-full overflow-hidden">
-                        <img src="/placeholder-user.jpg" alt="User Avatar" class="w-full h-full object-cover"/>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-medium">Jane Doe</h3>
-                            <span class="text-xs text-gray-400">2 hours ago</span>
+        {% if comments %}
+            <div class="mt-8 text-white py-6">
+                <h1 class="text-3xl font-semibold mb-4 py-3">Comments</h1>
+                <div class="space-y-10">
+                    <!-- 코멘트 -->
+                    {% for comment in comments %}
+                    <div class="flex items-start gap-4">
+                        <div class="w-8 h-8 border rounded-full overflow-hidden">
+                            <img src="{{ comment.user.image.url }}" alt="User Avatar" class="w-full h-full object-cover"/>
                         </div>
-                        <p class="text-gray-400">
-                            Wow, this is an amazing photo! The colors are so vibrant and the composition is really well
-                            done.
-                        </p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-4">
-                    <div class="w-8 h-8 border rounded-full overflow-hidden">
-                        <img src="/placeholder-user.jpg" alt="User Avatar" class="w-full h-full object-cover"/>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-medium">Michael Davis</h3>
-                            <span class="text-xs text-gray-400">1 day ago</span>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-medium">{{ comment.user.name }}</h3>
+                                <span class="text-xs text-gray-400">{{ comment.created_at }}</span>
+                            </div>
+                            <p class="text-gray-400">
+                                {{ comment.contents }}
+                            </p>
                         </div>
-                        <p class="text-gray-400">
-                            I love the way the sun is hitting the landscape in this photo. It creates such a beautiful
-                            and serene
-                            atmosphere.
-                        </p>
                     </div>
+                    {% endfor %}
+
                 </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 
 {% endblock contents %}

@@ -4,7 +4,8 @@
 {% block contents %}
 <div class="container mx-auto px-4 py-8 max-w-4xl bg-gray-900 rounded-lg shadow-lg">
     <h1 class="text-3xl font-bold mb-8 text-white">글 작성</h1>
-    <form class="space-y-6">
+    <form class="space-y-6" method="post" action="{% url "api:news_write" %}" enctype="multipart/form-data">
+        {% csrf_token %}
         <div>
             <label for="title" class="block text-lg font-medium text-white">제목</label>
             <input type="text" id="title" name="title" placeholder="제목을 입력하세요" class="px-4 py-4 mt-1 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
@@ -20,7 +21,7 @@
         <div>
             <label for="content" class="block text-lg font-medium text-white">내용</label>
             <div class="mt-1">
-                <textarea id="content" name="content" rows="10" placeholder="내용을 입력하세요" class="py-4 px-4 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                <textarea id="content" name="contents" rows="10" placeholder="내용을 입력하세요" class="py-4 px-4 w-full rounded-md border-gray-700 bg-gray-800 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
             </div>
         </div>
         <div class="flex justify-end space-x-4">

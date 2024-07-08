@@ -8,9 +8,9 @@ urlpatterns = [
     path("", views.home, name="home"),
     # 뉴스 페이지
     path("introduce/", views.introduce, name="introduce"),
-    path("news/", views.news, name="news"),
-    path("news/<int:pk>", views.news, name="news_detail"),
-    path("news_write/", views.news_write, name="news_write"),
+    path("news/", views.News.as_view(), name="news"),
+    path("news/<int:pk>", views.News.as_view(), name="news_detail"),
+    path("news_write/", views.NewsWrite.as_view(), name="news_write"),
     # 커뮤니티 페이지
     path("community/", views.community, name="community"),
     path("community/<int:pk>", views.community, name="community_detail"),

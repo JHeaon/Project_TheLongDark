@@ -32,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     introduce = models.TextField(blank=True)
-    image = models.ImageField(upload_to="user_image/", null=True)
+    image = models.ImageField(upload_to="user_images/", null=True)
 
     is_email_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
