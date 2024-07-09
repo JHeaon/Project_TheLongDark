@@ -17,6 +17,16 @@ urlpatterns = [
     path("community/", views.Community.as_view(), name="community"),
     path("community/<int:pk>", views.Community.as_view(), name="community_detail"),
     path("community_write/", views.Community_write.as_view(), name="community_write"),
+    path(
+        "community/<int:pk>/update",
+        views.CommunityUpdate.as_view(),
+        name="community_update",
+    ),
+    path(
+        "community/<int:pk>/delete",
+        views.CommunityDelete.as_view(),
+        name="community_delete",
+    ),
     # 유저 페이지
     path("support/", views.support, name="support"),
     path("login/", views.Login.as_view(), name="login"),

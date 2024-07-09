@@ -9,9 +9,9 @@
         <div class="grid grid-cols-1 gap-8">
             <div class="flex flex-col justify-between">
                 <div>
-                    <h2 class="text-2xl font-semibold mb-2 break-words">{{ community_post.title }}</h2>
+                    <h2 class="text-2xl font-semibold mb-2 break-words ">{{ community_post.title }}</h2>
                     <p class="text-gray-400 whitespace-pre-wrap break-words">
-                        {{ community_post.contents }}
+                        {{ community_post.contents|linebreaks }}
                     </p>
                 </div>
                 <div class="mt-6">
@@ -30,6 +30,20 @@
                 </div>
             </div>
         </div>
+
+        <!-- 수정, 삭제 버튼 -->
+        {% if user.is_staff or community_post.user == user %}
+            <div class="flex justify-end space-x-3">
+                <a href="{% url 'api:community_update' community_post.id %}"
+                   class="mt-4 inline-block bg-yellow-500 border border-transparent text-white font-medium px-6 py-2 rounded-md hover:bg-yellow-600 transition">
+                    Edit
+                </a>
+                <a href="{% url 'api:community_delete' community_post.id %}"
+                   class="mt-4 inline-block bg-red-500 border border-transparent text-white font-medium px-6 py-2 rounded-md hover:bg-red-600 transition">
+                    Delete
+                </a>
+            </div>
+        {% endif %}
     {% endif %}
 
 <!-- 수평선 추가 -->
@@ -64,6 +78,8 @@
     </form>
 
 {% endif %}
+
+
 
 
 

@@ -34,18 +34,9 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     introduce = models.TextField(blank=True)
     image = models.ImageField(upload_to="user_images/", null=True)
 
-    is_email_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     objects = UserManager()
 
     USERNAME_FIELD = "email"
-
-
-class EmailVerification(TimeStampedModel):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    key = models.CharField(max_length=100, null=True)
-
-    def __str__(self):
-        return f"{self.user.email}"
