@@ -215,15 +215,60 @@ class NewsUpdate(View):
 
     def post(self, request, pk):
         news_post = get_object_or_404(NewsPost, pk=pk)
-        news_post.title = request.POST.get("title")
-        news_post.contents = request.POST.get("contents")
-        news_post.image = request.FILES.get("image")
-        news_post.save()
-        return redirect(reverse("api:news"))
+
+        if check_user(request, news_post):
+            news_post.title = request.POST.get("title")
+            news_post.contents = request.POST.get("contents")
+            news_post.image = request.FILES.get("image")
+            news_post.save()
+            return redirect(reverse("api:news"))
+
+        return render(request, "404.html")
 
 
 class NewsDelete(View):
     def get(self, request, pk):
         news_post = get_object_or_404(NewsPost, pk=pk)
-        news_post.delete()
-        return redirect(reverse("api:news"))
+
+        if check_user(request, news_post):
+            news_post.delete()
+            return redirect(reverse("api:news"))
+
+        return render(request, "404.html")
+
+
+class CommunityUpdate(View):
+    def get(self, request, pk):
+        community_post = get_object_or_404(CommunityPost, pk=pk)
+
+        if check_user(request, community_post):
+
+            context = {"community_post": community_post}
+            return render(request, "api/community_write.html", context=context)
+
+        return render(request, "404.html")
+
+    def post(self, request, pk):
+        community_post = get_object_or_404(CommunityPost, pk=pk)
+        if check_user(request, community_post):
+            community_post.title = request.POST.get("title")
+            community_post.contents = request.POST.get("contents")
+            community_post.save()
+            return redirect(reverse("api:community_detail", args=(pk,)))
+
+        return render(request, "404.html")
+
+
+class CommunityDelete(View):
+    def get(self, request, pk):
+        community_post = get_object_or_404(CommunityPost, pk=pk)
+
+        if check_user(request, community_post):
+            community_post.delete()
+            return redirect(reverse("api:community"))
+
+        return render(request, "404.html")
+
+
+def check_user(request, queryset) -> bool:
+    return request.user == queryset.user or request.user.is_staff
