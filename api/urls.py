@@ -14,9 +14,9 @@ urlpatterns = [
     path("news/<int:pk>/delete", views.NewsDelete.as_view(), name="news_delete"),
     path("news_write/", views.NewsWrite.as_view(), name="news_write"),
     # 커뮤니티 페이지
-    path("community/", views.community, name="community"),
-    path("community/<int:pk>", views.community, name="community_detail"),
-    path("community_write/", views.community_write, name="community_write"),
+    path("community/", views.Community.as_view(), name="community"),
+    path("community/<int:pk>", views.Community.as_view(), name="community_detail"),
+    path("community_write/", views.Community_write.as_view(), name="community_write"),
     # 유저 페이지
     path("support/", views.support, name="support"),
     path("login/", views.Login.as_view(), name="login"),

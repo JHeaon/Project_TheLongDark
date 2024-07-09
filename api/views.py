@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.db import IntegrityError
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views import View
 from django.contrib.auth import (
     authenticate,
@@ -103,14 +103,56 @@ class Login(View):
         )
 
 
-def community(request, pk=None):
-    if pk:
-        return render(request, "api/community_detail.html")
-    return render(request, "api/community.html")
+class Community(View):
+    template_name = "api/community.html"
+
+    def get(self, request, pk=None):
+        if pk:
+            community_post = get_object_or_404(CommunityPost, pk=pk)
+            community_comments = CommunityComment.objects.filter(community_post=pk)
+            context = {
+                "community_post": community_post,
+                "community_comments": community_comments,
+            }
+            return render(request, "api/community_detail.html", context=context)
+
+        community_posts = CommunityPost.objects.all().order_by("-id")
+        paginator = Paginator(community_posts, 10)  # Show 10 posts per page.
+
+        page = request.GET.get("page")
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        context = {"community_posts": posts}
+        return render(request, self.template_name, context=context)
+
+    def post(self, request, pk=None):
+        community_post = get_object_or_404(CommunityPost, pk=pk)
+        CommunityComment.objects.create(
+            user=request.user,
+            community_post=community_post,
+            contents=request.POST.get("contents"),
+        )
+        return redirect(reverse("api:community_detail", args=(pk,)))
 
 
-def community_write(request):
-    return render(request, "api/community_write.html")
+class Community_write(View):
+    template_name = "api/community_write.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        CommunityPost.objects.create(
+            user=request.user,
+            title=request.POST.get("title"),
+            contents=request.POST.get("contents"),
+        )
+        return redirect(reverse("api:community"))
 
 
 def user(request):

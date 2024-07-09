@@ -7,8 +7,10 @@
         <div class="space-y-8">
             <!-- post -->
             <div class="flex items-center p-6 rounded-lg">
+                {% if user.image %}
                 <img src="{{ user.image.url }}"
                      class="flex-shrink-0 h-80 w-80 object-cover bg-gray-700 rounded-full" alt=""/>
+                {% endif %}
                 <div class="ml-6">
                     <h2 class="text-3xl font-semibold text-white">{{ user.name }}</h2>
                     <p class="text-xl text-gray-400">{{ user.created_at }}</p>

@@ -102,8 +102,10 @@
                     {% for comment in comments %}
                         <div class="flex items-start gap-4">
                             <div class="w-8 h-8 border rounded-full overflow-hidden">
-                                <img src="{{ comment.user.image.url }}" alt="User Avatar"
+                                {% if comment.user.image.urls %}
+                                <img src="{{ comment.user.image.urls }}" alt="User Avatar"
                                      class="w-full h-full object-cover"/>
+                                {% endif %}
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center justify-between">

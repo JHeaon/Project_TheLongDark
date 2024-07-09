@@ -1,92 +1,77 @@
 {% extends "base.html" %}
 {% load static %}
 
-
 {% block contents %}
 
     <div class="container mx-auto px-4 py-8 max-w-screen-xl full-height">
         <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden h-full">
             <div class="px-6 py-4 flex items-center justify-between border-b border-gray-700">
-                <div class="text-lg font-medium text-white">Title</div>
-                <div class="text-lg font-medium text-white">Author</div>
-                <div class="text-lg font-medium text-white">Date</div>
+                <div class="text-lg font-medium text-white flex-grow text-left">Title</div>
+                <div class="text-lg font-medium text-white flex-shrink-0 w-32 text-center">Author</div>
+                <div class="text-lg font-medium text-white flex-shrink-0 w-40 text-right">Date</div>
             </div>
             <div class="divide-y divide-gray-700">
-                <a href="{% url "api:community_detail" 1 %}" class="px-6 py-4 flex items-center justify-between">
-                    <div class="text-white">Introducing the new product line</div>
-                    <div class="text-gray-400">John Doe</div>
-                    <div class="text-gray-400">2023-06-01</div>
-                </a>
-                <div class="px-6 py-4 flex items-center justify-between">
-                    <div class="text-white">Tips for effective marketing strategies</div>
-                    <div class="text-gray-400">Jane Smith</div>
-                    <div class="text-gray-400">2023-05-15</div>
-                </div>
-                <div class="px-6 py-4 flex items-center justify-between">
-                    <div class="text-white">Upcoming company events</div>
-                    <div class="text-gray-400">Michael Johnson</div>
-                    <div class="text-gray-400">2023-04-30</div>
-                </div>
-                <div class="px-6 py-4 flex items-center justify-between">
-                    <div class="text-white">New features in our latest update</div>
-                    <div class="text-gray-400">Emily Davis</div>
-                    <div class="text-gray-400">2023-04-20</div>
-                </div>
-                <div class="px-6 py-4 flex items-center justify-between">
-                    <div class="text-white">Hiring for multiple positions</div>
-                    <div class="text-gray-400">David Lee</div>
-                    <div class="text-gray-400">2023-03-28</div>
-                </div>
-                <div class="px-6 py-4 flex items-center justify-between">
-                    <div class="text-white">Hiring for multiple positions</div>
-                    <div class="text-gray-400">David Lee</div>
-                    <div class="text-gray-400">2023-03-28</div>
-                </div>
-                <div class="px-6 py-4 flex items-center justify-between">
-                    <div class="text-white">Hiring for multiple positions</div>
-                    <div class="text-gray-400">David Lee</div>
-                    <div class="text-gray-400">2023-03-28</div>
-                </div>
-                <div class="px-6 py-4 flex items-center justify-between">
-                    <div class="text-white">Hiring for multiple positions</div>
-                    <div class="text-gray-400">David Lee</div>
-                    <div class="text-gray-400">2023-03-28</div>
-                </div>
-                <div class="px-6 py-4 flex items-center justify-between">
-                    <div class="text-white">Hiring for multiple positions</div>
-                    <div class="text-gray-400">David Lee</div>
-                    <div class="text-gray-400">2023-03-28</div>
-                </div>
+                {% if community_posts %}
+                    {% for post in community_posts %}
+                        <a href="{% url 'api:community_detail' post.id %}"
+                           class="px-6 py-4 flex items-center justify-between">
+                            <div class="text-white flex-grow truncate" style="max-width: 200px;">
+                                {{ post.title|truncatechars:20 }}
+                            </div>
+                            <div class="text-gray-400 flex-shrink-0 w-32 text-center flex items-center justify-center">
+                                {{ post.user.name }}
+                            </div>
+                            <div class="text-gray-400 flex-shrink-0 w-40 text-right">
+                                {{ post.created_at }}
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
 
         <!-- 글쓰기 버튼 -->
-        <!-- TODO: 유저가 관리자일때만 공지글을 작성 할 수 있도록 설정하기 -->
-        <div class="flex justify-end mt-4">
-            <a href="{% url "api:community_write" %}"
-               class="inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">Write</a>
-        </div>
+        {% if not user.is_anonymous %}
+            <div class="flex justify-end mt-4">
+                <a href="{% url "api:community_write" %}"
+                   class="inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">Write</a>
+            </div>
+        {% endif %}
 
         <!-- Pagination -->
         <div class="flex items-center justify-between mt-8">
-            <span class="text-gray-400">Showing 1-10 of 50 posts</span>
-            <div class="flex space-x-1">
-                <a href="#" class="p-2 text-gray-500 hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                         class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </a>
-                <a href="#" class="p-2 text-white bg-gray-700 rounded">1</a>
-                <a href="#" class="p-2 text-gray-500 hover:text-white">2</a>
-                <a href="#" class="p-2 text-gray-500 hover:text-white">3</a>
-                <a href="#" class="p-2 text-gray-500 hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                         class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
+            {% if community_posts.has_other_pages %}
+                <span class="text-gray-400">Showing {{ community_posts.start_index }}-{{ community_posts.end_index }} of {{ community_posts.paginator.count }} posts</span>
+                <div class="flex space-x-1">
+                    {% if community_posts.has_previous %}
+                        <a href="?page=1" class="p-2 text-gray-500 hover:text-white">First</a>
+                        <a href="?page={{ community_posts.previous_page_number }}" class="p-2 text-gray-500 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                 class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                        </a>
+                    {% endif %}
+
+                    {% for num in community_posts.paginator.page_range %}
+                        {% if community_posts.number == num %}
+                            <a href="?page={{ num }}" class="p-2 text-white bg-gray-700 rounded">{{ num }}</a>
+                        {% elif num > community_posts.number|add:'-3' and num < community_posts.number|add:'3' %}
+                            <a href="?page={{ num }}" class="p-2 text-gray-500 hover:text-white">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if community_posts.has_next %}
+                        <a href="?page={{ community_posts.next_page_number }}" class="p-2 text-gray-500 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                 class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <a href="?page={{ community_posts.paginator.num_pages }}" class="p-2 text-gray-500 hover:text-white">Last</a>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
     </div>
 

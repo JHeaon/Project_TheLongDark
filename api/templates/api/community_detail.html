@@ -4,124 +4,97 @@
 
 {% block contents %}
 
-    <div class="w-full max-w-6xl mx-auto px-4 py-8 text-white">
+    {% if community_post %}
+        <div class="w-full max-w-6xl mx-auto px-4 py-8 text-white">
         <div class="grid grid-cols-1 gap-8">
             <div class="flex flex-col justify-between">
                 <div>
-                    <h2 class="text-2xl font-semibold mb-2">Stunning Sunset Landscape</h2>
-                    <p class="text-gray-400">
-                        Capture the beauty of nature with this breathtaking sunset landscape photograph. Vibrant colors
-                        and a
-                        serene atmosphere make this a truly captivating image.
+                    <h2 class="text-2xl font-semibold mb-2 break-words">{{ community_post.title }}</h2>
+                    <p class="text-gray-400 whitespace-pre-wrap break-words">
+                        {{ community_post.contents }}
                     </p>
                 </div>
                 <div class="mt-6">
                     <div class="flex items-center gap-4 text-sm">
                         <div class="flex gap-2 items-center">
                             <div class="w-6 h-6 border rounded-full overflow-hidden">
-                                <img src="/placeholder-user.jpg" alt="User Avatar" class="w-full h-full object-cover"/>
+                                {% if community_post.user.image %}
+                                    <img src="{{ community_post.user.image.url }}" alt="User Avatar"
+                                         class="w-full h-full object-cover"/>
+                                {% endif %}
                             </div>
-                            <span class="text-white">John Doe</span>
+                            <span class="text-white">{{ community_post.user.name }}</span>
                         </div>
-                        <span class="text-gray-400">May 15, 2023</span>
-                    </div>
-                    <div class="flex items-center gap-4 mt-4">
-                        <button class="flex items-center px-4 py-2 border rounded text-white hover:bg-gray-100">
-                            <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                 stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-                            </svg>
-                            Like
-                        </button>
-                        <button class="flex items-center px-4 py-2 border rounded text-white hover:bg-gray-100">
-                            <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                 stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
-                            </svg>
-                            Comment
-                        </button>
-                        <button class="flex items-center px-4 py-2 border rounded text-white hover:bg-gray-100">
-                            <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                 stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-                                <polyline points="16 6 12 2 8 6"/>
-                                <polyline points="16 6 12 2 8 6"/>
-                                <line x1="12" y1="2" x2="12" y2="15"/>
-                            </svg>
-                            Share
-                        </button>
+                        <span class="text-gray-400">{{ community_post.created_at }}</span>
                     </div>
                 </div>
             </div>
         </div>
+    {% endif %}
 
+<!-- 수평선 추가 -->
+<hr class="my-8 border-gray-600"/>
 
-        <!-- 수평선 추가 -->
-        <hr class="my-8 border-gray-600"/>
+{% if not user.is_anonymous %}
 
-
-        <div class="flex justify-center items-start gap-4 py-5">
-            <div class="w-8 h-8 border rounded-full overflow-hidden">
-                <img src="/placeholder-user.jpg" alt="User Avatar" class="w-full h-full object-cover"/>
-            </div>
-            <div class="flex-1">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-medium text-white">Jane Doe</h3>
-                </div>
-            </div>
+    <div class="flex justify-center items-start gap-4 py-5">
+        <div class="w-8 h-8 border rounded-full overflow-hidden">
+            {% if user.image %}
+                <img src="{{ user.image.url }}" alt="User Avatar" class="w-full h-full object-cover"/>
+            {% endif %}
         </div>
-
-        <textarea
-                id="Context"
-                name="context"
-                class="mt-1 w-full h-40 rounded-md border-gray-200 bg-white text-3xl text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-        ></textarea>
-
-
-        <div class="flex justify-end mt-4">
-            <a href="#"
-               class="inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">Write</a>
-        </div>
-
-        <div class="mt-8 text-white">
-            <h2 class="text-2xl font-semibold mb-4">Comments</h2>
-            <div class="space-y-4">
-                <div class="flex items-start gap-4">
-                    <div class="w-8 h-8 border rounded-full overflow-hidden">
-                        <img src="/placeholder-user.jpg" alt="User Avatar" class="w-full h-full object-cover"/>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-medium">Jane Doe</h3>
-                            <span class="text-xs text-gray-400">2 hours ago</span>
-                        </div>
-                        <p class="text-gray-400">
-                            Wow, this is an amazing photo! The colors are so vibrant and the composition is really well
-                            done.
-                        </p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-4">
-                    <div class="w-8 h-8 border rounded-full overflow-hidden">
-                        <img src="/placeholder-user.jpg" alt="User Avatar" class="w-full h-full object-cover"/>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-medium">Michael Davis</h3>
-                            <span class="text-xs text-gray-400">1 day ago</span>
-                        </div>
-                        <p class="text-gray-400">
-                            I love the way the sun is hitting the landscape in this photo. It creates such a beautiful
-                            and serene
-                            atmosphere.
-                        </p>
-                    </div>
-                </div>
+        <div class="flex-1">
+            <div class="flex items-center justify-between">
+                <h3 class="font-medium text-white text-xl">{{ user.name }}</h3>
             </div>
         </div>
     </div>
+
+    <form method="post" action="{% url 'api:community_detail' community_post.id %}">
+        {% csrf_token %}
+        <textarea name="contents"
+                  class="mt-1 w-full h-20 rounded-md border-gray-200 bg-white text-xl text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+        ></textarea>
+        <div class="flex items-center justify-end space-x-4">
+            <button type="submit"
+                    class="mt-4 inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">
+                Write
+            </button>
+        </div>
+    </form>
+
+{% endif %}
+
+
+
+<!-- 댓글 -->
+{% if community_comments %}
+    <div class="mt-8 text-white">
+    <h2 class="text-2xl font-semibold mb-4">Comments</h2>
+    <div class="space-y-4">
+    {% for comment in community_comments %}
+        <div class="flex items-start gap-4">
+            <div class="w-8 h-8 border rounded-full overflow-hidden">
+                {% if comment.user.image %}
+                    <img src="{{ comment.user.image.url }}" alt="User Avatar"
+                         class="w-full h-full object-cover"/>
+                {% endif %}
+            </div>
+            <div class="flex-1">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-medium">{{ comment.user.name }}</h3>
+                    <span class="text-xs text-gray-400">{{ comment.created_at }}</span>
+                </div>
+                <p class="text-gray-400">
+                    {{ comment.contents }}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endif %}
+</div>
+</div>
+</div>
 
 {% endblock contents %}
