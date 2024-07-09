@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.db import IntegrityError
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -10,6 +12,7 @@ from django.contrib.auth import (
 )
 
 from api.models import *
+from api import utils
 
 
 def home(request):
@@ -53,8 +56,25 @@ class News(View):
         return redirect(reverse("api:news_detail", args=(pk,)))
 
 
-def support(request):
-    return render(request, "api/support.html")
+class Support(View):
+    def get(self, request):
+        return render(request, "api/support.html")
+
+    def post(self, request):
+        name = request.POST.get("first_name") + request.POST.get("last_name")
+        email = request.POST.get("email")
+        contents = request.POST.get("contents")
+
+        msg = f"""
+        답신 이메일 : {email}
+        성함 : {name}
+        문의 내용 : {contents}
+        """
+
+        sender = utils.EmailSender()
+        sender.send(os.getenv("EMAIL_ADDRESS"), msg)
+
+        return redirect(reverse("api:home"))
 
 
 class NewsWrite(View):

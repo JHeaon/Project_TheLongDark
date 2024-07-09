@@ -28,7 +28,7 @@ urlpatterns = [
         name="community_delete",
     ),
     # 유저 페이지
-    path("support/", views.support, name="support"),
+    path("support/", views.Support.as_view(), name="support"),
     path("login/", views.Login.as_view(), name="login"),
     path("logout/", views.Logout.as_view(), name="logout"),
     path("signup/", views.SignUp.as_view(), name="signup"),
