@@ -34,10 +34,12 @@
         <!-- 수정, 삭제 버튼 -->
         {% if user.is_staff or community_post.user == user %}
             <div class="flex justify-end space-x-3">
-                <a href="{% url 'api:community_update' community_post.id %}"
-                   class="mt-4 inline-block bg-yellow-500 border border-transparent text-white font-medium px-6 py-2 rounded-md hover:bg-yellow-600 transition">
-                    Edit
-                </a>
+                {% if community_post.user == user %}
+                    <a href="{% url 'api:community_update' community_post.id %}"
+                       class="mt-4 inline-block bg-yellow-500 border border-transparent text-white font-medium px-6 py-2 rounded-md hover:bg-yellow-600 transition">
+                        Edit
+                    </a>
+                {% endif %}
                 <a href="{% url 'api:community_delete' community_post.id %}"
                    class="mt-4 inline-block bg-red-500 border border-transparent text-white font-medium px-6 py-2 rounded-md hover:bg-red-600 transition">
                     Delete
@@ -64,7 +66,7 @@
         </div>
     </div>
 
-    <form method="post" action="{% url 'api:community_detail' community_post.id %}">
+    <form method="post" action="{% url 'api:community_comment_create' community_post.id %}">
         {% csrf_token %}
         <textarea name="contents"
                   class="mt-1 w-full h-20 rounded-md border-gray-200 bg-white text-xl text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
@@ -78,9 +80,6 @@
     </form>
 
 {% endif %}
-
-
-
 
 
 <!-- 댓글 -->

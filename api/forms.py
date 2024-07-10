@@ -12,3 +12,15 @@ class NewsCommentForm(forms.ModelForm):
     class Meta:
         model = NewsComment
         fields = ["contents"]
+
+
+class CommunityPostForm(forms.ModelForm):
+    class Meta:
+        model = CommunityPost
+        fields = ["title", "contents"]
+
+
+class CommunityCommentForm(forms.ModelForm):
+    class Meta:
+        model = CommunityComment
+        fields = ["contents"]

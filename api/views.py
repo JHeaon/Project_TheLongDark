@@ -112,6 +112,121 @@ class NewsCommentCreate(View):
         return render(request, "401.html")
 
 
+class Community(View):
+    template_name = "api/community.html"
+
+    def get(self, request, pk=None):
+        community_posts = (
+            CommunityPost.objects.select_related("user").all().order_by("-id")
+        )
+        paginator = Paginator(community_posts, 10)  # Show 10 posts per page.
+
+        page = request.GET.get("page")
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        context = {"community_posts": posts}
+        return render(request, self.template_name, context=context)
+
+
+class CommunityDetail(View):
+    def get(self, request, pk):
+        community_post = CommunityPost.objects.select_related("user").get(pk=pk)
+        community_comments = CommunityComment.objects.select_related("user").filter(
+            community_post=pk
+        )
+        context = {
+            "community_post": community_post,
+            "community_comments": community_comments,
+        }
+        return render(request, "api/community_detail.html", context=context)
+
+
+class CommunityCreate(View):
+    template_name = "api/community_write.html"
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return render(request, self.template_name)
+        return render(request, "401.html")
+
+    def post(self, request):
+        if request.user.is_authenticated:
+            form = CommunityPostForm(request.POST)
+            if form.is_valid():
+                community_post = form.save(commit=False)
+                community_post.user = request.user
+                community_post.save()
+                return redirect(reverse("api:community"))
+        return render(request, "400.html")
+
+
+class CommunityUpdate(View):
+    def get(self, request, pk):
+        community_post = CommunityPost.objects.get(pk=pk)
+        if community_post.user == request.user:
+            context = {"community_post": community_post}
+            return render(request, "api/community_write.html", context=context)
+        return render(request, "404.html")
+
+    def post(self, request, pk):
+        community_post = CommunityPost.objects.get(pk=pk)
+        if community_post.user == request.user:
+            form = CommunityPostForm(request.POST, instance=community_post)
+            if form.is_valid():
+                form.save()
+                return redirect(reverse("api:community_detail", args=(pk,)))
+
+        return render(request, "400.html")
+
+
+class CommunityDelete(View):
+    def get(self, request, pk):
+        community_post = CommunityPost.objects.get(pk=pk)
+        if request.user.is_staff or community_post.user == request.user:
+            community_post.delete()
+            return redirect(reverse("api:community"))
+
+        return render(request, "404.html")
+
+
+class CommunityCommentCreate(View):
+    def post(self, request, pk=None):
+        community_post = CommunityPost.objects.get(pk=pk)
+        CommunityComment.objects.create(
+            user=request.user,
+            community_post=community_post,
+            contents=request.POST.get("contents"),
+        )
+        return redirect(reverse("api:community_detail", args=(pk,)))
+
+
+def user(request):
+    return render(request, "api/user.html")
+
+
+class UserUpdate(View):
+    template_name = "api/user_update.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        user = request.user
+        user.introduce = request.POST.get("introduce")
+
+        if "image" in request.FILES:
+            user.image = request.FILES.get("image")
+
+        user.save()
+
+        return redirect(reverse("api:user"))
+
+
 class Support(View):
     def get(self, request):
         return render(request, "api/support.html")
@@ -131,10 +246,6 @@ class Support(View):
         sender.send(os.getenv("EMAIL_ADDRESS"), msg)
 
         return redirect(reverse("api:home"))
-
-
-def detail(request):
-    return render(request, "api/detail.html")
 
 
 class Login(View):
@@ -163,62 +274,10 @@ class Login(View):
         )
 
 
-class Community(View):
-    template_name = "api/community.html"
-
-    def get(self, request, pk=None):
-        if pk:
-            community_post = CommunityPost.objects.get(pk=pk)
-            community_comments = CommunityComment.objects.filter(community_post=pk)
-            context = {
-                "community_post": community_post,
-                "community_comments": community_comments,
-            }
-            return render(request, "api/community_detail.html", context=context)
-
-        community_posts = (
-            CommunityPost.objects.select_related("user").all().order_by("-id")
-        )
-        paginator = Paginator(community_posts, 10)  # Show 10 posts per page.
-
-        page = request.GET.get("page")
-        try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            posts = paginator.page(1)
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
-
-        context = {"community_posts": posts}
-        return render(request, self.template_name, context=context)
-
-    def post(self, request, pk=None):
-        community_post = get_object_or_404(CommunityPost, pk=pk)
-        CommunityComment.objects.create(
-            user=request.user,
-            community_post=community_post,
-            contents=request.POST.get("contents"),
-        )
-        return redirect(reverse("api:community_detail", args=(pk,)))
-
-
-class Community_write(View):
-    template_name = "api/community_write.html"
-
+class Logout(View):
     def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        CommunityPost.objects.create(
-            user=request.user,
-            title=request.POST.get("title"),
-            contents=request.POST.get("contents"),
-        )
-        return redirect(reverse("api:community"))
-
-
-def user(request):
-    return render(request, "api/user.html")
+        auth_logout(request)
+        return redirect(reverse("api:home"))
 
 
 class SignUp(View):
@@ -243,64 +302,3 @@ class SignUp(View):
             )
 
         return redirect(reverse("api:home"))
-
-
-class Logout(View):
-    def get(self, request):
-        auth_logout(request)
-        return redirect(reverse("api:home"))
-
-
-class UserUpdate(View):
-    template_name = "api/user_update.html"
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        user = request.user
-        user.introduce = request.POST.get("introduce")
-
-        if "image" in request.FILES:
-            user.image = request.FILES.get("image")
-
-        user.save()
-
-        return redirect(reverse("api:user"))
-
-
-class CommunityUpdate(View):
-    def get(self, request, pk):
-        community_post = get_object_or_404(CommunityPost, pk=pk)
-
-        if check_user(request, community_post):
-
-            context = {"community_post": community_post}
-            return render(request, "api/community_write.html", context=context)
-
-        return render(request, "404.html")
-
-    def post(self, request, pk):
-        community_post = get_object_or_404(CommunityPost, pk=pk)
-        if check_user(request, community_post):
-            community_post.title = request.POST.get("title")
-            community_post.contents = request.POST.get("contents")
-            community_post.save()
-            return redirect(reverse("api:community_detail", args=(pk,)))
-
-        return render(request, "404.html")
-
-
-class CommunityDelete(View):
-    def get(self, request, pk):
-        community_post = get_object_or_404(CommunityPost, pk=pk)
-
-        if check_user(request, community_post):
-            community_post.delete()
-            return redirect(reverse("api:community"))
-
-        return render(request, "404.html")
-
-
-def check_user(request, queryset) -> bool:
-    return request.user == queryset.user or request.user.is_staff

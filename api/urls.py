@@ -13,25 +13,31 @@ urlpatterns = [
     path("news/<int:pk>", views.NewsDetail.as_view(), name="news_detail"),
     path("news/<int:pk>/update", views.NewsUpdate.as_view(), name="news_update"),
     path("news/<int:pk>/delete", views.NewsDelete.as_view(), name="news_delete"),
-    # 뉴스 댓글 생성
     path(
-        "news_comment/<int:pk>/",
+        "news/<int:pk>/comments/",
         views.NewsCommentCreate.as_view(),
         name="news_comment_create",
     ),
     # 커뮤니티 페이지
     path("community/", views.Community.as_view(), name="community"),
-    path("community/<int:pk>", views.Community.as_view(), name="community_detail"),
-    path("community_write/", views.Community_write.as_view(), name="community_write"),
     path(
-        "community/<int:pk>/update",
+        "community/<int:pk>/", views.CommunityDetail.as_view(), name="community_detail"
+    ),
+    path("community/create/", views.CommunityCreate.as_view(), name="community_write"),
+    path(
+        "community/<int:pk>/update/",
         views.CommunityUpdate.as_view(),
         name="community_update",
     ),
     path(
-        "community/<int:pk>/delete",
+        "community/<int:pk>/delete/",
         views.CommunityDelete.as_view(),
         name="community_delete",
+    ),
+    path(
+        "community/<int:pk>/comments",
+        views.CommunityCommentCreate.as_view(),
+        name="community_comment_create",
     ),
     # 유저 페이지
     path("support/", views.Support.as_view(), name="support"),
