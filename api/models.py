@@ -43,7 +43,7 @@ class NewsComment(TimeStampedModel):
     create_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Comment by {self.user.email} on {self.news_post.title}"
+        return f"{self.news_post.title}"
 
 
 class SupportPost(TimeStampedModel):

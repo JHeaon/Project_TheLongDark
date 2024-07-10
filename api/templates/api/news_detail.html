@@ -79,7 +79,7 @@
                 </div>
             </div>
 
-            <form method="post" action="{% url 'api:news_detail' news.id %}">
+            <form method="post" action="{% url 'api:news_comment_create' news.id %}">
                 {% csrf_token %}
                 <textarea name="contents"
                           class="mt-1 w-full h-20 rounded-md border-gray-200 bg-white text-xl text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
@@ -102,8 +102,8 @@
                     {% for comment in comments %}
                         <div class="flex items-start gap-4">
                             <div class="w-8 h-8 border rounded-full overflow-hidden">
-                                {% if comment.user.image.urls %}
-                                <img src="{{ comment.user.image.urls }}" alt="User Avatar"
+                                {% if comment.user.image %}
+                                <img src="{{ comment.user.image.url }}" alt="User Avatar"
                                      class="w-full h-full object-cover"/>
                                 {% endif %}
                             </div>

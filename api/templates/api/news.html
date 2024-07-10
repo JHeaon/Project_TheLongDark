@@ -28,7 +28,7 @@
         <!-- 글쓰기 버튼 -->
         {% if user.is_staff %}
             <div class="flex justify-end mt-4">
-                <a href="{% url "api:news_write" %}"
+                <a href="{% url "api:news_create" %}"
                    class="inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">Write</a>
             </div>
         {% endif %}

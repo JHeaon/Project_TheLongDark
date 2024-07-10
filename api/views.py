@@ -1,6 +1,7 @@
 import os
 
 from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.urls import reverse_lazy
 from django.db import IntegrityError
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views import View
@@ -12,6 +13,7 @@ from django.contrib.auth import (
 )
 
 from api.models import *
+from api.forms import *
 from api import utils
 
 
@@ -27,13 +29,6 @@ class News(View):
     template_name = "api/news.html"
 
     def get(self, request, pk=None):
-        # Deatil 부분처리
-        if pk:
-            news = get_object_or_404(NewsPost, pk=pk)
-            comments = NewsComment.objects.filter(news_post=news.id)
-            context = {"news": news, "comments": comments}
-            return render(request, "api/news_detail.html", context=context)
-
         news_list = NewsPost.objects.all().order_by("-id")
         paginator = Paginator(news_list, 3)
 
@@ -46,11 +41,74 @@ class News(View):
         }
         return render(request, self.template_name, context=context)
 
+
+class NewsCreate(View):
+    template_name = "api/news_write.html"
+
+    def get(self, request):
+        if request.user.is_staff:
+            return render(request, self.template_name)
+        return render(request, "401.html", status=401)
+
+    def post(self, request):
+        if request.user.is_staff:
+            form = NewsPostForm(request.POST, request.FILES)
+            if form.is_valid():
+                news_post = form.save(commit=False)
+                news_post.user = request.user
+                news_post.save()
+                return redirect(reverse("api:news"))
+        return render(request, "400.html", status=400)
+
+
+class NewsDetail(View):
+    def get(self, request, pk):
+        news = NewsPost.objects.prefetch_related(
+            "newscomment_set",
+            "newscomment_set__user",
+        ).get(pk=pk)
+        comments = news.newscomment_set.all()
+        context = {"news": news, "comments": comments}
+        return render(request, "api/news_detail.html", context=context)
+
+
+class NewsUpdate(View):
+    def get(self, request, pk):
+        if request.user.is_staff:
+            news_post = NewsPost.objects.get(pk=pk)
+            context = {"news_post": news_post}
+            return render(request, "api/news_write.html", context=context)
+
     def post(self, request, pk):
+        if request.user.is_staff:
+            news_post = NewsPost.objects.get(pk=pk)
+            print(request.POST)
+            form = NewsPostForm(request.POST, request.FILES, instance=news_post)
+            if form.is_valid():
+                print(form.data)
+                form.save()
+                return redirect(reverse("api:news"))
+
+        return render(request, "404.html")
+
+
+class NewsDelete(View):
+    def get(self, request, pk):
+        news_post = get_object_or_404(NewsPost, pk=pk)
+
+        if check_user(request, news_post):
+            news_post.delete()
+            return redirect(reverse("api:news"))
+
+        return render(request, "404.html")
+
+
+class NewsCommentCreate(View):
+    def post(self, request, pk=None):
         news_post = NewsPost.objects.get(pk=pk)
         NewsComment.objects.create(
-            news_post=news_post,
             user=request.user,
+            news_post=news_post,
             contents=request.POST.get("contents"),
         )
         return redirect(reverse("api:news_detail", args=(pk,)))
@@ -75,22 +133,6 @@ class Support(View):
         sender.send(os.getenv("EMAIL_ADDRESS"), msg)
 
         return redirect(reverse("api:home"))
-
-
-class NewsWrite(View):
-    template_name = "api/news_write.html"
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        title = request.POST.get("title")
-        contents = request.POST.get("contents")
-        image = request.FILES.get("image")
-        user = request.user
-
-        NewsPost.objects.create(user=user, title=title, contents=contents, image=image)
-        return redirect(reverse("api:news"))
 
 
 def detail(request):
@@ -128,7 +170,7 @@ class Community(View):
 
     def get(self, request, pk=None):
         if pk:
-            community_post = get_object_or_404(CommunityPost, pk=pk)
+            community_post = CommunityPost.objects.get(pk=pk)
             community_comments = CommunityComment.objects.filter(community_post=pk)
             context = {
                 "community_post": community_post,
@@ -136,7 +178,9 @@ class Community(View):
             }
             return render(request, "api/community_detail.html", context=context)
 
-        community_posts = CommunityPost.objects.all().order_by("-id")
+        community_posts = (
+            CommunityPost.objects.select_related("user").all().order_by("-id")
+        )
         paginator = Paginator(community_posts, 10)  # Show 10 posts per page.
 
         page = request.GET.get("page")
@@ -225,36 +269,6 @@ class UserUpdate(View):
         user.save()
 
         return redirect(reverse("api:user"))
-
-
-class NewsUpdate(View):
-    def get(self, request, pk):
-        news_post = get_object_or_404(NewsPost, pk=pk)
-        context = {"news_post": news_post}
-        return render(request, "api/news_write.html", context=context)
-
-    def post(self, request, pk):
-        news_post = get_object_or_404(NewsPost, pk=pk)
-
-        if check_user(request, news_post):
-            news_post.title = request.POST.get("title")
-            news_post.contents = request.POST.get("contents")
-            news_post.image = request.FILES.get("image")
-            news_post.save()
-            return redirect(reverse("api:news"))
-
-        return render(request, "404.html")
-
-
-class NewsDelete(View):
-    def get(self, request, pk):
-        news_post = get_object_or_404(NewsPost, pk=pk)
-
-        if check_user(request, news_post):
-            news_post.delete()
-            return redirect(reverse("api:news"))
-
-        return render(request, "404.html")
 
 
 class CommunityUpdate(View):
