@@ -6,3 +6,9 @@ class NewsPostForm(forms.ModelForm):
     class Meta:
         model = NewsPost
         fields = ["title", "contents", "image"]
+
+
+class NewsCommentForm(forms.ModelForm):
+    class Meta:
+        model = NewsComment
+        fields = ["contents"]

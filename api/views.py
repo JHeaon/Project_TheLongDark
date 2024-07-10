@@ -63,11 +63,8 @@ class NewsCreate(View):
 
 class NewsDetail(View):
     def get(self, request, pk):
-        news = NewsPost.objects.prefetch_related(
-            "newscomment_set",
-            "newscomment_set__user",
-        ).get(pk=pk)
-        comments = news.newscomment_set.all()
+        news = NewsPost.objects.select_related("user").get(pk=pk)
+        comments = news.newscomment_set.select_related("user").filter(news_post=news)
         context = {"news": news, "comments": comments}
         return render(request, "api/news_detail.html", context=context)
 
@@ -94,24 +91,25 @@ class NewsUpdate(View):
 
 class NewsDelete(View):
     def get(self, request, pk):
-        news_post = get_object_or_404(NewsPost, pk=pk)
-
-        if check_user(request, news_post):
+        if request.user.is_staff:
+            news_post = NewsPost.objects.get(pk=pk)
             news_post.delete()
             return redirect(reverse("api:news"))
-
         return render(request, "404.html")
 
 
 class NewsCommentCreate(View):
     def post(self, request, pk=None):
-        news_post = NewsPost.objects.get(pk=pk)
-        NewsComment.objects.create(
-            user=request.user,
-            news_post=news_post,
-            contents=request.POST.get("contents"),
-        )
-        return redirect(reverse("api:news_detail", args=(pk,)))
+        if request.user.is_authenticated:
+            form = NewsCommentForm(request.POST)
+            if form.is_valid():
+                news_comment = form.save(commit=False)
+                news_comment.news_post = NewsPost.objects.get(pk=pk)
+                news_comment.user = request.user
+                news_comment.save()
+                return redirect(reverse("api:news_detail", args=(pk,)))
+
+        return render(request, "401.html")
 
 
 class Support(View):
