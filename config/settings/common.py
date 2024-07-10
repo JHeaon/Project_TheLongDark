@@ -9,7 +9,7 @@ DEBUG = True
 os.getenv = environ.Env(DEBUG=(bool, True))
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
 
-SECRET_KEY = "wjddudgns!tjdodfla@wjdgodnjs#wjdalgP$"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -21,9 +21,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Third party apps
-    "rest_framework",
-    "rest_framework.authtoken",
-    "drf_spectacular",
     "debug_toolbar",
     # Local apps
     "api.apps.ApiConfig",
@@ -43,20 +40,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
-
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication"
-    ],
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-}
-
-SPECTACULAR_SETTINGS = {
-    "TITLE": "Your Project API",
-    "DESCRIPTION": "Your project description",
-    "VERSION": "1.0.0",
-    "SERVE_INCLUDE_SCHEMA": False,
-}
 
 TEMPLATES = [
     {
@@ -122,39 +105,25 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 
 
-import tempfile
-import os
+# DEBUG 상태 일 떄
+if DEBUG:
+    INTERNAL_IPS = [
+        "127.0.0.1",
+    ]
 
-# 임시 디렉토리 경로 설정
-TEMP_DIR = os.path.join(BASE_DIR, "tmp")
-
-# 임시 디렉토리 생성 (존재하지 않는 경우)
-if not os.path.exists(TEMP_DIR):
-    os.makedirs(TEMP_DIR)
-
-# Django의 FILE_UPLOAD_TEMP_DIR 설정
-FILE_UPLOAD_TEMP_DIR = TEMP_DIR
-
-
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "level": "DEBUG",
-            "class": "logging.StreamHandler",
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {
+                "level": "DEBUG",
+                "class": "logging.StreamHandler",
+            },
         },
-    },
-    "loggers": {
-        "django.db.backends": {
-            "handlers": ["console"],
-            "level": "DEBUG",
+        "loggers": {
+            "django.db.backends": {
+                "handlers": ["console"],
+                "level": "DEBUG",
+            },
         },
-    },
-}
+    }

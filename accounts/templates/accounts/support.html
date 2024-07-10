@@ -34,7 +34,7 @@
                     </p>
                 </div>
 
-                <form method="post" action="{% url 'api:support' %}" class="mt-8 grid grid-cols-6 gap-6">
+                <form method="post" action="{% url 'accounts:support' %}" class="mt-8 grid grid-cols-6 gap-6">
                     {% csrf_token %}
                     <div class="col-span-6 sm:col-span-3">
                         <label

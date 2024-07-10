@@ -8,8 +8,8 @@
             <!-- post -->
             <div class="flex items-center p-6 rounded-lg">
                 {% if user.image %}
-                <img src="{{ user.image.url }}"
-                     class="flex-shrink-0 h-80 w-80 object-cover bg-gray-700 rounded-full" alt=""/>
+                    <img src="{{ user.image.url }}"
+                         class="flex-shrink-0 h-80 w-80 object-cover bg-gray-700 rounded-full" alt=""/>
                 {% endif %}
                 <div class="ml-6">
                     <h2 class="text-3xl font-semibold text-white">{{ user.name }}</h2>
@@ -17,12 +17,13 @@
                     <p class="text-2xl font-semibold text-white">{{ user.introduce }}</p>
                 </div>
             </div>
-                        <!-- 글쓰기 버튼 -->
-        <!-- TODO: 유저가 관리자일때만 공지글을 작성 할 수 있도록 설정하기 -->
-        <div class="flex justify-end mt-4">
-            <a href="{% url "api:user_update" %}"
-               class="inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">Write</a>
-        </div>
+
+
+            <!-- 글쓰기 버튼 -->
+            <div class="flex justify-end mt-4">
+                <a href="{% url "accounts:user_update" %}"
+                   class="inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">Write</a>
+            </div>
         </div>
 
     </div>

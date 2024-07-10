@@ -6,7 +6,7 @@
         <!-- Post List -->
         <div class="space-y-8">
             <!-- post -->
-            <form method="post" action="{% url 'api:user_update' %}" enctype="multipart/form-data">
+            <form method="post" action="{% url 'accounts:user_update' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="flex items-center p-6 rounded-lg bg-gray-900">
                     <div class="relative flex-shrink-0 h-80 w-80">
