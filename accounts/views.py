@@ -76,7 +76,6 @@ class Login(View):
         }
 
         user = authenticate(**user_data)
-        print(user)
 
         if user:
             auth_login(request, user)
@@ -108,8 +107,6 @@ class SignUp(View):
             "password": request.POST.get("password"),
             "name": request.POST.get("name"),
         }
-
-        print(user_data)
 
         try:
             user = get_user_model().objects.create_user(**user_data)

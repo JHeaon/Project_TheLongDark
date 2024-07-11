@@ -39,7 +39,7 @@ class NewsCreate(View):
     def get(self, request):
         if request.user.is_staff:
             return render(request, self.template_name)
-        return render(request, "401.html", status=401)
+        return render(request, "401.html")
 
     def post(self, request):
         if request.user.is_staff:
@@ -49,7 +49,7 @@ class NewsCreate(View):
                 news_post.user = request.user
                 news_post.save()
                 return redirect(reverse("api:news"))
-        return render(request, "400.html", status=400)
+        return render(request, "400.html")
 
 
 class NewsDetail(View):
@@ -70,10 +70,8 @@ class NewsUpdate(View):
     def post(self, request, pk):
         if request.user.is_staff:
             news_post = NewsPost.objects.get(pk=pk)
-            print(request.POST)
             form = NewsPostForm(request.POST, request.FILES, instance=news_post)
             if form.is_valid():
-                print(form.data)
                 form.save()
                 return redirect(reverse("api:news"))
 

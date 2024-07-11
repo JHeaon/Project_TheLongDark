@@ -33,7 +33,7 @@
         <!-- 글쓰기 버튼 -->
         {% if not user.is_anonymous %}
             <div class="flex justify-end mt-4">
-                <a href="{% url "api:community_write" %}"
+                <a href="{% url "api:community_create" %}"
                    class="inline-block bg-black border border-white text-white font-medium px-6 py-2 rounded-md hover:bg-white hover:text-black transition">Write</a>
             </div>
         {% endif %}

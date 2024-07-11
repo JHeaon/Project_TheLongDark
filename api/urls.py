@@ -23,7 +23,7 @@ urlpatterns = [
     path(
         "community/<int:pk>/", views.CommunityDetail.as_view(), name="community_detail"
     ),
-    path("community/create/", views.CommunityCreate.as_view(), name="community_write"),
+    path("community/create/", views.CommunityCreate.as_view(), name="community_create"),
     path(
         "community/<int:pk>/update/",
         views.CommunityUpdate.as_view(),

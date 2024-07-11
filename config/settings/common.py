@@ -105,6 +105,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 
 
+FILE_UPLOAD_TEMP_DIR = BASE_DIR / "tmp"
+
+
 # DEBUG 상태 일 떄
 if DEBUG:
     INTERNAL_IPS = [
