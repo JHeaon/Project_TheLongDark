@@ -30,7 +30,7 @@ jobs:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
         SMTP_LOGIN_ID: ${{ secrets.SMTP_LOGIN_ID }}
-        SMTP_LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
+        SMTP_LOGIN_PASSWORD: ${{ secrets.SMTP_LOGIN_PASSWORD }}
         SMTP_SERVER_URL: ${{ secrets.SMTP_SERVER_URL }}
         SMTP_SERVER_PORT: ${{ secrets.SMTP_SERVER_PORT }}
       run: |
