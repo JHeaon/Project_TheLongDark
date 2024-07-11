@@ -11,6 +11,7 @@ from django.contrib.auth import (
 from django.db import IntegrityError
 
 from accounts import utils
+from api.models import SupportPost
 
 
 def user(request):
@@ -40,9 +41,15 @@ class Support(View):
         return render(request, "accounts/support.html")
 
     def post(self, request):
-        name = request.POST.get("first_name") + request.POST.get("last_name")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        name = first_name + last_name
         email = request.POST.get("email")
         contents = request.POST.get("contents")
+
+        support_post = SupportPost.objects.create(
+            name=name, email=email, contents=contents
+        )
 
         msg = f"""
         답신 이메일 : {email}
