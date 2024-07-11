@@ -14,25 +14,25 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.11, 3.12]
+        python-version: [ 3.11, 3.12 ]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run Tests
-      env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
-        SMTP_LOGIN_ID: ${{ secrets.SMTP_LOGIN_ID }}
-        SMTP_LOGIN_PASSWORD: ${{ secrets.SMTP_LOGIN_PASSWORD }}
-        SMTP_SERVER_URL: ${{ secrets.SMTP_SERVER_URL }}
-        SMTP_SERVER_PORT: ${{ secrets.SMTP_SERVER_PORT }}
-      run: |
-        python manage.py test
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Tests
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          SMTP_LOGIN_ID: ${{ secrets.SMTP_LOGIN_ID }}
+          SMTP_LOGIN_PASSWORD: ${{ secrets.SMTP_LOGIN_PASSWORD }}
+          SMTP_SERVER_URL: ${{ secrets.SMTP_SERVER_URL }}
+          SMTP_SERVER_PORT: ${{ secrets.SMTP_SERVER_PORT }}
+        run: |
+          python manage.py test
