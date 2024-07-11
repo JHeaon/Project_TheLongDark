@@ -8,8 +8,16 @@ DEBUG = True
 
 os.getenv = environ.Env(DEBUG=(bool, True))
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
-
 SECRET_KEY = os.getenv("SECRET_KEY")
+
+# Debugging logs
+print(f"SECRET_KEY: {SECRET_KEY}")
+print(f"EMAIL_ADDRESS: {os.getenv('EMAIL_ADDRESS')}")
+print(f"SMTP_LOGIN_ID: {os.getenv('SMTP_LOGIN_ID')}")
+print(f"SMTP_LOGIN_PASSWORD: {os.getenv('SMTP_LOGIN_PASSWORD')}")
+print(f"SMTP_SERVER_URL: {os.getenv('SMTP_SERVER_URL')}")
+print(f"SMTP_SERVER_PORT: {os.getenv('SMTP_SERVER_PORT')}")
+
 
 ALLOWED_HOSTS = ["*"]
 
@@ -107,26 +115,24 @@ AUTH_USER_MODEL = "accounts.User"
 
 FILE_UPLOAD_TEMP_DIR = BASE_DIR / "tmp"
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
-# DEBUG 상태 일 떄
-if DEBUG:
-    INTERNAL_IPS = [
-        "127.0.0.1",
-    ]
-
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "handlers": {
-            "console": {
-                "level": "DEBUG",
-                "class": "logging.StreamHandler",
-            },
-        },
-        "loggers": {
-            "django.db.backends": {
-                "handlers": ["console"],
-                "level": "DEBUG",
-            },
-        },
-    }
+#
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "level": "DEBUG",
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "loggers": {
+#         "django.db.backends": {
+#             "handlers": ["console"],
+#             "level": "DEBUG",
+#         },
+#     },
+# }
