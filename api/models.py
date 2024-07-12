@@ -14,6 +14,9 @@ class CommunityPost(TimeStampedModel):
     def __str__(self):
         return self.title
 
+    class Meta:
+        db_table = "CommunityPost"
+
 
 class CommunityComment(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -23,6 +26,9 @@ class CommunityComment(TimeStampedModel):
 
     def __str__(self):
         return f"Comment by {self.user.email} on {self.community_post.title}"
+
+    class Meta:
+        db_table = "CommunityComment"
 
 
 class NewsPost(TimeStampedModel):
@@ -35,6 +41,9 @@ class NewsPost(TimeStampedModel):
     def __str__(self):
         return self.title
 
+    class Meta:
+        db_table = "NewsPost"
+
 
 class NewsComment(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -45,6 +54,9 @@ class NewsComment(TimeStampedModel):
     def __str__(self):
         return f"{self.news_post.title}"
 
+    class Meta:
+        db_table = "NewsComment"
+
 
 class SupportPost(TimeStampedModel):
     name = models.CharField(max_length=255)
@@ -54,3 +66,6 @@ class SupportPost(TimeStampedModel):
 
     def __str__(self):
         return f"Support Post by {self.name}"
+
+    class Meta:
+        db_table = "SupportPost"

@@ -39,3 +39,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     objects = UserManager()
     USERNAME_FIELD = "email"
+
+    class Meta:
+        db_table = "User"
