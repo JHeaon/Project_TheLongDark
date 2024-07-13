@@ -9,10 +9,10 @@ urlpatterns = [
     path("introduce/", views.introduce, name="introduce"),
     # 뉴스 페이지
     path("news/", views.News.as_view(), name="news"),
-    path("news/create", views.NewsCreate.as_view(), name="news_create"),
-    path("news/<int:pk>", views.NewsDetail.as_view(), name="news_detail"),
-    path("news/<int:pk>/update", views.NewsUpdate.as_view(), name="news_update"),
-    path("news/<int:pk>/delete", views.NewsDelete.as_view(), name="news_delete"),
+    path("news/create/", views.NewsCreate.as_view(), name="news_create"),
+    path("news/<int:pk>/", views.NewsDetail.as_view(), name="news_detail"),
+    path("news/<int:pk>/update/", views.NewsUpdate.as_view(), name="news_update"),
+    path("news/<int:pk>/delete/", views.NewsDelete.as_view(), name="news_delete"),
     path(
         "news/<int:pk>/comments/",
         views.NewsCommentCreate.as_view(),
@@ -35,7 +35,7 @@ urlpatterns = [
         name="community_delete",
     ),
     path(
-        "community/<int:pk>/comments",
+        "community/<int:pk>/comments/",
         views.CommunityCommentCreate.as_view(),
         name="community_comment_create",
     ),
