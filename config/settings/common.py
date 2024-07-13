@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third party apps
     "debug_toolbar",
+    "django_seed",
     # Local apps
     "api.apps.ApiConfig",
     "core.apps.CoreConfig",
@@ -97,7 +98,7 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
