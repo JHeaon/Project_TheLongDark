@@ -1,5 +1,6 @@
 import os
 
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views import View
@@ -19,7 +20,7 @@ def introduce(request):
 class News(View):
     template_name = "api/news.html"
 
-    def get(self, request, pk=None):
+    def get(self, request, pk=None) -> HttpResponse:
         news_list = NewsPost.objects.all().order_by("-id")
         paginator = Paginator(news_list, 3)
 
