@@ -9,4 +9,13 @@ services:
     volumes:
       - .:/project/
     command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
+      sh -c "gunicorn --workers 3 --bind 0.0.0.0:8000 config.wsgi:application"
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - backend
