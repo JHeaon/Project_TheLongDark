@@ -19,18 +19,23 @@ DATABASES = {
 }
 
 
-# #
-# AWS_ACCESS_KEY_ID = "Access key ID 입력"  # .csv 파일에 있는 내용을 입력 Access key ID
-# AWS_SECRET_ACCESS_KEY = (
-#     "Secret acess Key 입력"  # .csv 파일에 있는 내용을 입력 Secret access key
-# )
-# AWS_REGION = "ap-northeast-2"
-#
-# # S3 Storages
-# AWS_STORAGE_BUCKET_NAME = "lee-teset-bucket"  # 설정한 버킷 이름
-# AWS_S3_CUSTOM_DOMAIN = "%s.s3.%s.amazonaws.com" % (AWS_STORAGE_BUCKET_NAME, AWS_REGION)
-# AWS_S3_OBJECT_PARAMETERS = {
-#     "CacheControl": "max-age=86400",
-# }
-# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-# MEDIA_ROOT = os.path.join(BASE_DIR, "path/to/store/my/files/")
+# AWS S3
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_REGION = os.getenv("AWS_REGION")
+
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_CUSTOM_DOMAIN = "%s.s3.%s.amazonaws.com" % (AWS_STORAGE_BUCKET_NAME, AWS_REGION)
+
+AWS_S3_OBJECT_PARAMETERS = {
+    "CacheControl": "max-age=86400",
+}
+
+
+# Static, Media
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_STORAGE = "config.storages.StaticStorage"
+
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+DEFAULT_FILE_STORAGE = "config.storages.MediaStorage"
