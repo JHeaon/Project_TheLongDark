@@ -7,7 +7,6 @@
         <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden h-full">
             <div class="px-6 py-4 flex items-center justify-between border-b border-gray-700">
                 <div class="text-lg font-medium text-white flex-grow text-left">Title</div>
-                <div class="text-lg font-medium text-white flex-shrink-0 w-32 text-center">Author</div>
                 <div class="text-lg font-medium text-white flex-shrink-0 w-40 text-right">Date</div>
             </div>
             <div class="divide-y divide-gray-700">
@@ -16,7 +15,7 @@
                         <a href="{% url 'api:community_detail' post.id %}"
                            class="px-6 py-4 flex items-center justify-between">
                             <div class="text-white flex-grow truncate" style="max-width: 200px;">
-                                {{ post.title|truncatechars:20 }}
+                                {{ post.title|truncatechars:40 }}
                             </div>
                             <div class="text-gray-400 flex-shrink-0 w-32 text-center flex items-center justify-center">
                                 {{ post.user.name }}
