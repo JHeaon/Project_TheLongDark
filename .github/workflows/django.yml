@@ -52,4 +52,4 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_STORAGE_BUCKET_NAME: ${{ secrets.AWS_STORAGE_BUCKET_NAME }}
         run: |
-          python manage.py test --noinput
+          python manage.py test

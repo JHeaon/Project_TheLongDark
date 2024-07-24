@@ -10,15 +10,6 @@ os.getenv = environ.Env(DEBUG=(bool, True))
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-# git action envfile Debugging logs
-# print(f"SECRET_KEY: {SECRET_KEY}")
-# print(f"EMAIL_ADDRESS: {os.getenv('EMAIL_ADDRESS')}")
-# print(f"SMTP_LOGIN_ID: {os.getenv('SMTP_LOGIN_ID')}")
-# print(f"SMTP_LOGIN_PASSWORD: {os.getenv('SMTP_LOGIN_PASSWORD')}")
-# print(f"SMTP_SERVER_URL: {os.getenv('SMTP_SERVER_URL')}")
-# print(f"SMTP_SERVER_PORT: {os.getenv('SMTP_SERVER_PORT')}")
-
-
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
