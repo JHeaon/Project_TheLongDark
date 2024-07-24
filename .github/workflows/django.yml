@@ -29,13 +29,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Tests
+      - name: Running Tests
         env:
+          # Email
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
           SMTP_LOGIN_ID: ${{ secrets.SMTP_LOGIN_ID }}
           SMTP_LOGIN_PASSWORD: ${{ secrets.SMTP_LOGIN_PASSWORD }}
           SMTP_SERVER_URL: ${{ secrets.SMTP_SERVER_URL }}
           SMTP_SERVER_PORT: ${{ secrets.SMTP_SERVER_PORT }}
+
+          # DB
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+#
+#          # AWS
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_STORAGE_BUCKET_NAME: ${{ secrets.AWS_STORAGE_BUCKET_NAME }}
         run: |
           python manage.py test
