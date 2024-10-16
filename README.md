@@ -2,7 +2,6 @@
 ## proejct introduce
 스팀에 발매중인 더롱다크 게임을 소개하고, 게임 관련 이야기를 나눌수 있는 커뮤니티 서비스입니다.   
 
-Site: https://jheaon.shop/
 
  
 ## stack
